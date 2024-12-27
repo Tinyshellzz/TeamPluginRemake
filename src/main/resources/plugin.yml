@@ -1,0 +1,13 @@
+name: TeamPlugin
+version: '${version}'
+main: tcc.youajing.teamplugin.TeamPlugin
+api-version: '1.20'
+load: POSTWORLD
+authors: [ YouaJing ]
+folia-supported: true
+depend: [PlaceholderAPI]
+commands:
+  team:
+    description: Manage your team.
+    usage: /team ...
+    default: true
