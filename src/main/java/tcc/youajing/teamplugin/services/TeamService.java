@@ -1082,6 +1082,15 @@ public class TeamService {
             player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "只有队长和副手才能设置团队qq！");
             return true;
         }
+
+        int teamSize = TeamManager.getSize(team);
+
+        // #测试注释
+//        if (teamSize < 5) {
+//            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法选择颜色！");
+//            return true;
+//        }
+
         // 获取第二个参数，作为团队的qq
         String qq = args[1];
 

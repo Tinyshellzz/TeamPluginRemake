@@ -74,7 +74,7 @@ public class TeampluginExpansion extends PlaceholderExpansion {
                     return "<#FFFFFF>";
                 }
                 // 返回团队的颜色
-                return team.getColor();
+                return "<" + team.getColor() + ">";
             case "playtime":
                 return String.valueOf(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000);
             case "elytra":
@@ -83,7 +83,7 @@ public class TeampluginExpansion extends PlaceholderExpansion {
                 if (team == null) {
                     return "<#FFFFFF>";
                 }
-                return "&3&l&o·"+ team.getColor() + team.getName();
+                return "&3&l&o·<" + team.getColor() + ">" +  team.getName();
             case "name4chat":
                 if (team == null) {
                     return "<#FFFFFF>";
