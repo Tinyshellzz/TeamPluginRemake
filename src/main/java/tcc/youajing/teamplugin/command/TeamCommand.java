@@ -40,7 +40,7 @@ public class TeamCommand implements TabExecutor {
                     teamService.get(sender, command, label, args);
             }
 
-            return false;
+            return true;
         }
 
 
@@ -106,7 +106,7 @@ public class TeamCommand implements TabExecutor {
                 return teamService.qq(player, command, label, args);
         }
 
-        return true;
+        return false;
     }
 
     @Override
