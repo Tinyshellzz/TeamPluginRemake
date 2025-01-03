@@ -4,6 +4,8 @@ import org.bukkit.Bukkit;
 
 import java.util.UUID;
 
+import static tcc.youajing.teamplugin.ObjectPool.gson;
+
 public class MCPlayer {
     public String name;
     public UUID uuid;
@@ -33,12 +35,17 @@ public class MCPlayer {
         return owner == null;
     }
 
-    public boolean inTeam(String team) {
-        return team.equals(this.team);
+    public boolean inTeam(Team team) {
+        return team.name.equals(this.team);
     }
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String toString() {
+        return gson.toJson(this);
     }
 
     public UUID getUuid() {

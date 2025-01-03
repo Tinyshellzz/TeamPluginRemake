@@ -508,7 +508,7 @@ public class TeamService {
         String targetName = args[1];
         MCPlayer userByName = mcPlayerMapper.get_user_by_name(targetName);
 
-        if (userByName == null || !userByName.inTeam(team.name)) {
+        if (userByName == null || !userByName.inTeam(team)) {
             player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "这个玩家不在你的团队中！");
             return true;
         }
@@ -556,7 +556,7 @@ public class TeamService {
 
         MCPlayer userByName = mcPlayerMapper.get_user_by_name(targetName);
 
-        if (userByName == null || userByName.inTeam(team.name)) {
+        if (userByName == null || !userByName.inTeam(team)) {
             player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "这个玩家不在你的团队中！");
             return true;
         }
