@@ -8,6 +8,7 @@ import org.jetbrains.annotations.NotNull;
 import tcc.youajing.teamplugin.TeamPlugin;
 import tcc.youajing.teamplugin.entities.Team;
 import tcc.youajing.teamplugin.services.TeamManager;
+import tcc.youajing.teamplugin.utils.MyUtil;
 
 // 创建一个继承自PlaceholderExpansion的类
 public class TeampluginExpansion extends PlaceholderExpansion {
@@ -75,6 +76,14 @@ public class TeampluginExpansion extends PlaceholderExpansion {
                 }
                 // 返回团队的颜色
                 return "<" + team.getColor() + ">";
+            case "color2":
+                if (team == null) {
+                    return "<#FFFFFF>";
+                } else if (team.getColor() == null) {
+                    return "<#FFFFFF>";
+                }
+                // 返回团队的颜色
+                return MyUtil.msgColor(team.getColor());
             case "playtime":
                 return String.valueOf(player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000);
             case "elytra":

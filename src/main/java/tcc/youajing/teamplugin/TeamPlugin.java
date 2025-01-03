@@ -50,7 +50,10 @@ public final class TeamPlugin extends JavaPlugin  {
         this.getCommand("team").setExecutor(new TeamCommand(this));
 
         // 注册 PlaceHolder
-        new TeampluginExpansion(this).register();
+        if(this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
+            new TeampluginExpansion(this).register();
+            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + ChatColor.GREEN + "PlaceholderAPI 准备就绪");
+        }
     }
 
     @Override

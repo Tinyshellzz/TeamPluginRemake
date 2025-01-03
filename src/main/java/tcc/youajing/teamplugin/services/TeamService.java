@@ -91,10 +91,11 @@ public class TeamService {
         }
 
         // #测试注释
-//        if (playTime < 48) {
-//            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你的总游玩时长不足48小时，不能创建团队！");
-//            return true;
-//        }
+        if (playTime < 48) {
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你的总游玩时长不足48小时，不能创建团队！");
+            return true;
+        }
+
 
         player.setLevel(player.getLevel() - 100);
         TeamManager.createTeam(name, player);
@@ -126,10 +127,10 @@ public class TeamService {
         int teamSize = TeamManager.getSize(mc_player.team);
 
         // #测试注释
-//        if (teamSize < 5) {
-//            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法选择颜色！");
-//            return true;
-//        }
+        if (teamSize < 5) {
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法选择颜色！");
+            return true;
+        }
 
         String colorName = args[1];
 
@@ -173,10 +174,10 @@ public class TeamService {
         int teamSize = TeamManager.getSize(mc_player.team);
 
         // #测试注释
-//        if (teamSize < 5) {
-//            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设定团队简称！");
-//            return true;
-//        }
+        if (teamSize < 5) {
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设定团队简称！");
+            return true;
+        }
         String abbr = args[1];
 
         if (abbr.length() != 1 || !team.name.contains(abbr)) {
@@ -189,7 +190,7 @@ public class TeamService {
         }
 
         player.setLevel(player.getLevel() - 3);
-        TeamManager.setColor(team, abbr);
+        TeamManager.setAbbr(team, abbr);
         player.sendMessage(ChatColor.GOLD + "``经验等级-3");
         player.sendMessage(ChatColor.GOLD + "你成功为团队" + MyUtil.msgColor(team.color) + team.getName() + ChatColor.GOLD + "设定了简称" + MyUtil.msgColor(team.color) + " [" + abbr + "]" + ChatColor.GOLD + "！");
 
@@ -221,13 +222,13 @@ public class TeamService {
 
         int teamSize = TeamManager.getSize(teamName);
         // #测试注释
-//        if (teamSize < 5) {
-//            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设定团队简称！");
-//            return true;
-//        }
+        if (teamSize < 5) {
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设定团队简称！");
+            return true;
+        }
         String abbr = args[2];
 
-        TeamManager.setColor(team, abbr);
+        TeamManager.setAbbr(team, abbr);
         player.sendMessage(ChatColor.GOLD + "你成功为团队" + MyUtil.msgColor(team.color) + team.getName() + ChatColor.GOLD + "设定了简称" + MyUtil.msgColor(team.color) + " [" + abbr + "]" + ChatColor.GOLD + "！");
 
         return true;
@@ -281,10 +282,10 @@ public class TeamService {
         int teamSize = TeamManager.getSize(team.getName());
 
         // #测试注释
-//        if (teamSize < 5) {
-//            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设置传送点！");
-//            return true;
-//        }
+        if (teamSize < 5) {
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设置传送点！");
+            return true;
+        }
 
         // 获取玩家的脚下坐标
         Location location = player.getLocation();
@@ -1086,10 +1087,10 @@ public class TeamService {
         int teamSize = TeamManager.getSize(team);
 
         // #测试注释
-//        if (teamSize < 5) {
-//            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法选择颜色！");
-//            return true;
-//        }
+        if (teamSize < 5) {
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法选择颜色！");
+            return true;
+        }
 
         // 获取第二个参数，作为团队的qq
         String qq = args[1];
