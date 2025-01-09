@@ -3,7 +3,9 @@ package tcc.youajing.teamplugin.services;
 import org.bukkit.*;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
+import tcc.youajing.teamplugin.config.PluginConfig;
 import tcc.youajing.teamplugin.database.MCPlayerMapper;
 import tcc.youajing.teamplugin.database.TeamMapper;
 import tcc.youajing.teamplugin.entities.MCPlayer;
@@ -1109,6 +1111,18 @@ public class TeamService {
 
         // 发送成功消息给玩家
         player.sendMessage("你成功将你的团队的qq设置为" + MyUtil.msgColor(team.color) + qq + ChatColor.RESET + "!");
+
+        return true;
+    }
+
+    public boolean reload(CommandSender sender, Command command, String label, String[] args) {
+        if(!(sender instanceof ConsoleCommandSender)){
+            sender.sendMessage("只有控制台才能使用该命令");
+            return true;
+        }
+
+        PluginConfig.reload();
+        sender.sendMessage(ChatColor.DARK_AQUA + "[Team]" + ChatColor.GREEN + "配置更新成功");
 
         return true;
     }

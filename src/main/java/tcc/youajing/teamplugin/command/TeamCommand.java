@@ -38,6 +38,8 @@ public class TeamCommand implements TabExecutor {
             switch (subcommand) {
                 case "get":
                     teamService.get(sender, command, label, args);
+                case "reload":
+                    return teamService.reload(sender, command, label, args);
             }
 
             return true;
