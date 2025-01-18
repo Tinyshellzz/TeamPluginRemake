@@ -10,6 +10,7 @@ import tcc.youajing.teamplugin.database.MCPlayerMapper;
 import tcc.youajing.teamplugin.database.TeamMapper;
 import tcc.youajing.teamplugin.entities.MCPlayer;
 import tcc.youajing.teamplugin.entities.Team;
+import tcc.youajing.teamplugin.placeholder.TeampluginExpansion;
 import tcc.youajing.teamplugin.utils.MyUtil;
 
 import java.util.*;
@@ -1090,7 +1091,7 @@ public class TeamService {
 
         // #测试注释
         if (teamSize < 5) {
-            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法选择颜色！");
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人设置QQ！");
             return true;
         }
 
@@ -1122,6 +1123,11 @@ public class TeamService {
         }
 
         PluginConfig.reload();
+        // 注册 PlaceHolder
+        if(plugin.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null){
+            new TeampluginExpansion(plugin).register();
+            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + ChatColor.GREEN + "PlaceholderAPI 准备就绪");
+        }
         sender.sendMessage(ChatColor.DARK_AQUA + "[Team]" + ChatColor.GREEN + "配置更新成功");
 
         return true;
