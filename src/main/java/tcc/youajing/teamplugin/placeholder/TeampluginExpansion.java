@@ -49,7 +49,7 @@ public class TeampluginExpansion extends PlaceholderExpansion {
         }
 
         // 获取玩家所在的团队对象
-        Team team = TeamManager.getTeamByPlayer(player);
+        Team team = TeamManager.getTeamByPlayer2(player);
 
         // 判断团队是否为空，如果为空，返回null
 

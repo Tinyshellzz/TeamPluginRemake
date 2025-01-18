@@ -9,19 +9,21 @@ import tcc.youajing.teamplugin.entities.MCPlayer;
 import tcc.youajing.teamplugin.entities.MyLocation;
 import tcc.youajing.teamplugin.entities.Team;
 
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 import static tcc.youajing.teamplugin.ObjectPool.mcPlayerMapper;
 import static tcc.youajing.teamplugin.ObjectPool.teamMapper;
 
 public class TeamManager {
+    public static Map<UUID, Team> teams = new HashMap<>();
+
     public static void createTeam(String teamName, Player president) {
         Team team = new Team(teamName, president.getUniqueId());
 
         mcPlayerMapper.update_team_by_uuid(president.getUniqueId(), teamName);
         teamMapper.insert(team);
+
+        teams.put(president.getUniqueId(), team);
     }
 
     public static int getSize(String teamName) {
@@ -61,15 +63,41 @@ public class TeamManager {
     public static Team getTeamByPlayer(Player player) {
         MCPlayer userByUuid = mcPlayerMapper.get_user_by_uuid(player.getUniqueId());
         if (userByUuid.team == null) {
+            teams.put(player.getUniqueId(), null);
             return null;    // 玩家还没有加入团队
         }
 
-        return teamMapper.get_team_by_name(userByUuid.team);
+        Team team = teamMapper.get_team_by_name(userByUuid.team);
+        teams.put(player.getUniqueId(), team);
+        return team;
+    }
+
+    public static Team getTeamByPlayer2(Player player) {
+        if(teams.containsKey(player.getUniqueId())) {
+            return teams.get(player.getUniqueId());
+        }
+
+        MCPlayer userByUuid = mcPlayerMapper.get_user_by_uuid(player.getUniqueId());
+        if (userByUuid.team == null) {
+            teams.put(player.getUniqueId(), null);
+            return null;    // 玩家还没有加入团队
+        }
+
+        Team team = teamMapper.get_team_by_name(userByUuid.team);
+        teams.put(player.getUniqueId(), team);
+        return team;
     }
 
     public static void deleteTeam(String teamName) {
         mcPlayerMapper.delete_team_by_teamName(teamName);
         teamMapper.delete_team_by_name(teamName);
+
+        for (var entry : teams.entrySet()) {
+            Team team = entry.getValue();
+            if (team.name.equals(teamName)) {
+                teams.remove(entry.getKey());
+            }
+        }
     }
 
     public static void setHome(String teamName, Location home) {
@@ -92,10 +120,12 @@ public class TeamManager {
 
     public static void kickMember(UUID uuid) {
         mcPlayerMapper.update_team_by_uuid(uuid, null);
+        teams.remove(uuid);
     }
 
     public static void addMember(Team team, UUID uuid) {
         mcPlayerMapper.update_team_by_uuid(uuid, team.name);
+        teams.put(uuid, team);
     }
 
     public static void setVicePresident(Team team, UUID uuid) {
@@ -109,6 +139,14 @@ public class TeamManager {
     public static void rename(Team team, String newName) {
         teamMapper.update_name_by_name(team.name, newName);
         mcPlayerMapper.update_team_by_team(team.name, newName);
+
+        for (var entry : teams.entrySet()) {
+            Team team2 = entry.getValue();
+            if (Objects.equals(team2.name, team.name)) {
+                team2.name = newName;
+                teams.put(entry.getKey(), team2);
+            }
+        }
     }
 
     public static List<MCPlayer> getMembers(Team team) {

@@ -37,8 +37,10 @@ public class TeamCommand implements TabExecutor {
 
             switch (subcommand) {
                 case "get":
+                    Bukkit.getConsoleSender().sendMessage("TeamCommand.get" + sender.toString());
                     return teamService.get(sender, command, label, args);
                 case "reload":
+                    Bukkit.getConsoleSender().sendMessage("TeamCommand.reload" + sender.toString());
                     return teamService.reload(sender, command, label, args);
             }
 
@@ -59,52 +61,76 @@ public class TeamCommand implements TabExecutor {
 
         switch (subcommand) {
             case "get":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.get" + sender.toString());
                 return teamService.get(player, command, label, args);
             case "new":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.new" + sender.toString());
                 return teamService.create(player, command, label, args);
             case "color":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.color" + sender.toString());
                 return teamService.color(player, command, label, args);
             case "abbr":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.abbr" + sender.toString());
                 return teamService.abbr(player, command, label, args);
             case "enabbr":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.enabbr" + sender.toString());
                 return teamService.enabbr(player, command, label, args);
             case "del":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.del" + sender.toString());
                 return teamService.del(player, command, label, args);
             case "sethome":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.sethome" + sender.toString());
                 return teamService.sethome(player, command, label, args);
             case "enforcesethome":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.enforcesethome" + sender.toString());
                 return teamService.enforcesethome(player, command, label, args);
             case "enforcesetcolor":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.enforcesetcolor" + sender.toString());
                 return teamService.enforcesetcolor(player, command, label, args);
             case "home":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.home" + sender.toString());
                 return teamService.home(player, command, label, args);
             case "tp":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.tp" + sender.toString());
                 return teamService.tp(player, command, label, args);
             case "invite":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.invite" + sender.toString());
                 return teamService.invite(player, command, label, args);
             case "kick":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.kick" + sender.toString());
                 return teamService.kick(player, command, label, args);
             case "set副手":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.set副手" + sender.toString());
                 return teamService.setVicePresident(player, command, label, args);
             case "unset副手":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.unset副手" + sender.toString());
                 return teamService.unsetVicePresident(player, command, label, args);
             case "rename":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.rename" + sender.toString());
                 return teamService.rename(player, command, label, args);
             case "list":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.list" + sender.toString());
                 return teamService.list(player, command, label, args);
             case "members":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.members" + sender.toString());
                 return teamService.members(player, command, label, args);
             case "online":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.online" + sender.toString());
                 return teamService.online(player, command, label, args);
             case "accept":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.accept" + sender.toString());
                 return teamService.accept(player, command, label, args);
             case "reject":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.reject" + sender.toString());
                 return teamService.reject(player, command, label, args);
             case "enforcerename":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.enforcerename" + sender.toString());
                 return teamService.enforcerename(player, command, label, args);
             case "quit":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.quit" + sender.toString());
                 return teamService.quit(player, command, label, args);
             case "qq":
+                Bukkit.getConsoleSender().sendMessage("TeamCommand.qq" + sender.toString());
                 return teamService.qq(player, command, label, args);
         }
 

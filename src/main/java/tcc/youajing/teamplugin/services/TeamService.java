@@ -35,6 +35,7 @@ public class TeamService {
             return true;
         }
 
+        Bukkit.getConsoleSender().sendMessage("TeamService.get get_user_by_uuid" + player.toString());
         MCPlayer mc_player = mcPlayerMapper.get_user_by_uuid(targetPlayer.getUniqueId());
         if (mc_player == null) {
             player.sendMessage(String.format("{\"team_color\":\"%s\",\"team_name\":\"%s\"}", "#495057", "该玩家还没有加入组织捏"));
@@ -47,7 +48,9 @@ public class TeamService {
         }
 
         Team team = teamMapper.get_team_by_name(teamName);
+        TeamManager.teams.put(mc_player.getUuid(), team);
 
+        TeamManager.teams.put(mc_player.getUuid(), team);
         player.sendMessage(String.format("{\"team_color\":\"%s\",\"team_name\":\"%s\"}", team.color, teamName));
         return true;
     }
@@ -122,6 +125,8 @@ public class TeamService {
         }
 
         Team team = teamMapper.get_team_by_name(mc_player.team);
+        TeamManager.teams.put(mc_player.getUuid(), team);
+        TeamManager.teams.put(mc_player.getUuid(), team);
         if (!team.isPresident(player) & !team.isVicePresident(player)) {
             player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "只有队长、副手才能选择团队颜色！");
             return true;
@@ -169,6 +174,8 @@ public class TeamService {
         }
 
         Team team = teamMapper.get_team_by_name(mc_player.team);
+        TeamManager.teams.put(mc_player.getUuid(), team);
+        TeamManager.teams.put(mc_player.getUuid(), team);
         if (!team.isPresident(player) & !team.isVicePresident(player)) {
             player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "只有队长、副手才能设定团队简称！");
             return true;
