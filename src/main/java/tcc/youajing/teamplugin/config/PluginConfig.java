@@ -14,7 +14,8 @@ public class PluginConfig {
     public String db_user;
     public String db_passwd;
     public String db_database;
-    public Integer active_playtime;
+    public int active_playtime = 25200;
+    public int team_qq_requirement = 5;
 
     private static ConfigWrapper configWrapper = new ConfigWrapper(plugin, "config.yml");
 
@@ -29,7 +30,14 @@ public class PluginConfig {
         config.db_user = yamlconfig.getString("db_user");
         config.db_passwd = yamlconfig.getString("db_passwd");
         config.db_database = yamlconfig.getString("db_database");
-        config.active_playtime = yamlconfig.getInt("active_playtime");
+        String active_playtime_str = yamlconfig.getString("active_playtime");
+        if (active_playtime_str != null) {
+            config.active_playtime = Integer.parseInt(active_playtime_str);
+        }
+        String team_qq_requirement_str = yamlconfig.getString("team_qq_requirement");
+        if (team_qq_requirement_str != null) {
+            config.team_qq_requirement = Integer.parseInt(team_qq_requirement_str);
+        }
     }
 
     @Override

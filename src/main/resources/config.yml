@@ -3,5 +3,6 @@ db_port: 3360
 db_user: "team"
 db_passwd: "TccServer2024@"
 db_database: "team"
-# play time requirement of counting as an active player
+# play time requirement of counting as an active player, 单位s
 active_playtime: 25200
+team_qq_requirement: 5

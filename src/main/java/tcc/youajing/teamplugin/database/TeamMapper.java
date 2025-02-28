@@ -91,7 +91,7 @@ public class TeamMapper {
             conn.commit();
             stmt = conn.prepareStatement("SELECT * FROM teams");
             rs = stmt.executeQuery();
-            if(rs.next()) {
+            while(rs.next()) {
                 Team team =  new Team(rs.getString(1), UUID.fromString(rs.getString(2)), rs.getString(3) == null ? null : UUID.fromString(rs.getString(3)), rs.getString(4), rs.getString(5) == null ? null : gson.fromJson(rs.getString(5), MyLocation.class), rs.getString(6), rs.getString(7));
                 teams.add(team);
             }

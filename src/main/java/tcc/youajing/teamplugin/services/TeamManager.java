@@ -45,6 +45,14 @@ public class TeamManager {
 
     public static void setAbbr(String teamName, String abbr) {
         teamMapper.update_abbr_by_name(teamName, abbr);
+
+        // 同步更改所有 abbr
+        for (var entry : teams.entrySet()) {
+            Team team = entry.getValue();
+            if (team.name.equals(teamName)) {
+                team.abbr = abbr;
+            }
+        }
     }
 
     public static void setAbbr(Team team, String abbr) {
