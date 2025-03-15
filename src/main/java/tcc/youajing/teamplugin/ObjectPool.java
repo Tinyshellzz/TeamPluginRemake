@@ -6,6 +6,7 @@ import tcc.youajing.teamplugin.config.PluginConfig;
 import tcc.youajing.teamplugin.database.MCPlayerMapper;
 import tcc.youajing.teamplugin.database.TeamMapper;
 import tcc.youajing.teamplugin.services.TeamService;
+import tcc.youajing.teamplugin.services.TeamVisitService;
 
 import java.util.HashMap;
 
@@ -19,6 +20,7 @@ public class ObjectPool {
     public static TeamMapper teamMapper;
 
     public static TeamService teamService;
+    public static TeamVisitService teamVisitService;
 
     public static HashMap<String, String> colors = new HashMap<>();
 

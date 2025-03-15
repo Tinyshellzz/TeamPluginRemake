@@ -1,5 +1,8 @@
 package tcc.youajing.teamplugin.tasks;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+
 import java.time.Duration;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -9,6 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 public class RunTask {
     public static void run() {
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + ChatColor.GREEN + "RunTask");
+
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
         ZonedDateTime nextRun = now.withHour(0).withMinute(0).withSecond(0);
         if(now.compareTo(nextRun) > 0)

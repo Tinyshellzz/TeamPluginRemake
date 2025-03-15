@@ -170,4 +170,8 @@ public class TeamManager {
     }
 
     public static void setQQ(Team team, String qq) {setQQ(team.name, qq);}
+
+    public static void setVisit(Team team, Location visit) {
+        teamMapper.update_visit_by_name(team.name, new MyLocation(visit));
+    }
 }

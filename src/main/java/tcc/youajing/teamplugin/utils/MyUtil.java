@@ -27,10 +27,22 @@ public class MyUtil {
 
         String colorStr = "";
         if (matcher.find()) {
+            // 将 RGB 转换为 & 颜色
             colorStr = ChatColor.of(colorCode).toString();
         }
 
+        // 将 & 颜色显示
         return ChatColor.translateAlternateColorCodes('&', colorStr);
+    }
+
+    /**
+     *
+     * @param msg 含有'&'开头的颜色代码
+     * @return
+     */
+    public static String msgColor2(String msg) {
+        // 将 & 颜色显示
+        return ChatColor.translateAlternateColorCodes('&', msg);
     }
 
     public static void teleport(Player player, Location location) {

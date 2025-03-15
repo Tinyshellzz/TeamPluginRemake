@@ -15,8 +15,9 @@ public class Team {
     public Location home;
     public String color = "<#FFFFFF>";
     public String abbr;
+    public Location visit;
 
-    public Team(String name, UUID president, UUID vice_president, String qq, Location home, String color, String abbr) {
+    public Team(String name, UUID president, UUID vice_president, String qq, Location home, String color, String abbr, Location visit) {
         this.name = name;
         this.president = president;
         this.vice_president = vice_president;
@@ -24,9 +25,10 @@ public class Team {
         this.home = home;
         this.color = color;
         this.abbr = abbr;
+        this.visit = visit;
     }
 
-    public Team(String name, UUID president, UUID vice_president, String qq, MyLocation home, String color, String abbr) {
+    public Team(String name, UUID president, UUID vice_president, String qq, MyLocation home, String color, String abbr, MyLocation visit) {
         this.name = name;
         this.president = president;
         this.vice_president = vice_president;
@@ -34,6 +36,7 @@ public class Team {
         this.home = home == null ? null : home.toLocation();
         this.color = color;
         this.abbr = abbr;
+        this.visit = visit == null ? null : visit.toLocation();
     }
 
     public Team(String name, UUID president) {

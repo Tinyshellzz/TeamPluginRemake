@@ -10,6 +10,7 @@ import tcc.youajing.teamplugin.database.TeamMapper;
 import tcc.youajing.teamplugin.listener.PlayerJoinListener;
 import tcc.youajing.teamplugin.placeholder.TeampluginExpansion;
 import tcc.youajing.teamplugin.services.TeamService;
+import tcc.youajing.teamplugin.services.TeamVisitService;
 import tcc.youajing.teamplugin.tasks.RunTask;
 
 
@@ -40,6 +41,7 @@ public final class TeamPlugin extends JavaPlugin  {
         ObjectPool.mcPlayerMapper = new MCPlayerMapper();
         ObjectPool.teamMapper = new TeamMapper();
         ObjectPool.teamService = new TeamService();
+        ObjectPool.teamVisitService = new TeamVisitService();
     }
 
     public void register(){

@@ -97,10 +97,10 @@ public class TeamService {
         }
 
         // #测试注释
-        if (playTime < 48) {
-            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你的总游玩时长不足48小时，不能创建团队！");
-            return true;
-        }
+//        if (playTime < 48) {
+//            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你的总游玩时长不足48小时，不能创建团队！");
+//            return true;
+//        }
 
 
         player.setLevel(player.getLevel() - 100);
@@ -108,6 +108,7 @@ public class TeamService {
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
         player.sendMessage(ChatColor.GOLD + "``经验等级-100");
         player.sendMessage(ChatColor.GOLD + "恭喜，你创建了一个名为" + name + "的团队");
+        player.sendMessage(ChatColor.GOLD + "你可以用 /team setvisit 设置团队公开传送点");
         player.sendMessage(ChatColor.GOLD + "当团队规模达到" + ChatColor.YELLOW + ChatColor.BOLD + "5" + ChatColor.RESET + ChatColor.GOLD + "人，你可以使用 /team sethome 为团队设置传送点并且可以使用 /team color 选择团队名称颜色");
 
         return true;
@@ -292,10 +293,10 @@ public class TeamService {
         int teamSize = TeamManager.getSize(team.getName());
 
         // #测试注释
-        if (teamSize < 5) {
-            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设置传送点！");
-            return true;
-        }
+//        if (teamSize < 5) {
+//            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设置传送点！");
+//            return true;
+//        }
 
         // 获取玩家的脚下坐标
         Location location = player.getLocation();

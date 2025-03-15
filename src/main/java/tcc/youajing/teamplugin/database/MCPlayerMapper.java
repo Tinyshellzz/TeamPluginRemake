@@ -303,8 +303,8 @@ public class MCPlayerMapper {
             return;
         }
 
-        if(mcPlayer.login_time.day_7 == -1) {
-            mcPlayer.login_time.day_7 = playTime;
+        if(mcPlayer.login_time.day_14 == -1) {
+            mcPlayer.login_time.day_14 = playTime;
         }
 
         PreparedStatement stmt = null;
@@ -336,7 +336,7 @@ public class MCPlayerMapper {
         ResultSet rs = null;
         try {
             conn = MysqlConfig.connect();
-            stmt = conn.prepareStatement("UPDATE mc_players SET login_time=? active=? WHERE uuid=?");
+            stmt = conn.prepareStatement("UPDATE mc_players SET login_time=?, active=? WHERE uuid=?");
             stmt.setString(1, gson.toJson(login_time));
             stmt.setBoolean(2, active);
             stmt.setString(3, uuid.toString());
@@ -363,7 +363,7 @@ public class MCPlayerMapper {
             conn = MysqlConfig.connect();
             conn.commit();
             stmt = conn.prepareStatement("SELECT * FROM mc_players WHERE login_time!=?");
-            stmt.setString(1, "{\"day_1\":-1,\"day_2\":-1,\"day_3\":-1,\"day_4\":-1,\"day_5\":-1,\"day_6\":-1,\"day_7\":-1}");
+            stmt.setString(1, "{\"day_1\":-1,\"day_2\":-1,\"day_3\":-1,\"day_4\":-1,\"day_5\":-1,\"day_6\":-1,\"day_7\":-1,\"day_8\":-1,\"day_9\":-1,\"day_10\":-1,\"day_11\":-1,\"day_12\":-1,\"day_13\":-1,\"day_14\":-1}");
             rs = stmt.executeQuery();
             while(rs.next()) {
                 MCPlayer mcPlayer =  new MCPlayer(rs.getString(1), UUID.fromString(rs.getString(2)), rs.getString(3), gson.fromJson(rs.getString(4), LoginTime.class), rs.getString(5) == null ? null : UUID.fromString(rs.getString(5)), rs.getBoolean(6));

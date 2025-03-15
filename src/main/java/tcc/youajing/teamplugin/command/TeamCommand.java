@@ -18,8 +18,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
-import static tcc.youajing.teamplugin.ObjectPool.colors;
-import static tcc.youajing.teamplugin.ObjectPool.teamService;
+import static tcc.youajing.teamplugin.ObjectPool.*;
 
 
 public class TeamCommand implements TabExecutor {
@@ -132,6 +131,10 @@ public class TeamCommand implements TabExecutor {
             case "qq":
                 Bukkit.getConsoleSender().sendMessage("TeamCommand.qq" + sender.toString());
                 return teamService.qq(player, command, label, args);
+            case "setvisit":
+                return teamVisitService.setVisit(player, command, label, args);
+            case "visit":
+                return teamVisitService.visit(player, command, label, args);
         }
 
         return false;
@@ -149,7 +152,7 @@ public class TeamCommand implements TabExecutor {
         // 判断命令参数的长度
         if (args.length == 1) {
             // 如果只有一个参数，返回所有子命令的列表
-            return Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite" , "accept" , "reject" , "kick", "color", "abbr","list", "members" ,"home","online", "quit", "qq");
+            return Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite" , "accept" , "reject" , "kick", "color", "abbr","list", "members" ,"home","online", "quit", "qq", "setvisit", "visit");
         } else if (args.length == 2) {
             // 如果有两个参数，根据第一个参数返回不同的补全列表
             String subcommand = args[0].toLowerCase();
@@ -280,7 +283,6 @@ public class TeamCommand implements TabExecutor {
                     }
                     return teamNames;
 
-
                 case "tp":
                     // 查看团队成员的子命令，返回所有团队的名称
                     if (!player.hasPermission("teamplugin.op")) {
@@ -304,6 +306,10 @@ public class TeamCommand implements TabExecutor {
                             teamNames1.add(t.getName());
                         }
                     } return teamNames1;
+                case "setvisit":
+                    return null;
+                case "visit":
+                    return teamMapper.get_visit_teamName_list();
                 default:
                     return null;
             }
