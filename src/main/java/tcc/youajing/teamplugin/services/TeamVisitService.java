@@ -8,6 +8,8 @@ import tcc.youajing.teamplugin.entities.MCPlayer;
 import tcc.youajing.teamplugin.entities.Team;
 import tcc.youajing.teamplugin.utils.MyUtil;
 
+import static tcc.youajing.teamplugin.ObjectPool.pluginConfig;
+
 public class TeamVisitService {
     public boolean setVisit(Player player, Command command, String label, String[] args) {
         // 判断玩家是否在一个团队中
@@ -37,10 +39,15 @@ public class TeamVisitService {
             player.sendMessage(ChatColor.YELLOW + "用法: /team visit <名称>");
             return true;
         }
-        // 判断玩家是否有足够的经验等级
-        if (player.getLevel() < 30) {
-            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你需要至少30级经验才能访问其他团队！");
-            return true;
+
+        // 消耗30级经验
+        if(!pluginConfig.debug) {
+            if (player.getLevel() < 30) {
+                player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你需要至少30级经验才能创建团队！谢谢");
+                return true;
+            } else {
+                player.setLevel(player.getLevel() - 30);
+            }
         }
 
         String teamName = args[1];
@@ -52,12 +59,9 @@ public class TeamVisitService {
         }
         // 判断团队是否有设置公开传送点
         if (team.visit == null) {
-            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你的团队还没有设定公开传送点！请让团队的队长使用 /team setvisit 来设定传送点");
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "该团队还没有设定公开传送点！请让团队的队长使用 /team setvisit 来设定传送点");
             return true;
         }
-
-        // 扣除玩家30级经验
-        player.setLevel(player.getLevel() - 30);
 
         MyUtil.teleport(player, team.visit);
 

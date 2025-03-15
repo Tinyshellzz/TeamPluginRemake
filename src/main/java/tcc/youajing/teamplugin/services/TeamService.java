@@ -91,19 +91,22 @@ public class TeamService {
             return true;
         }
 
-        if (player.getLevel() < 100) {
-            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你需要至少100级经验才能创建团队！谢谢");
+        // 游玩时间大于48小时
+        if (playTime < 48 && !pluginConfig.debug) {
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你的总游玩时长不足48小时，不能创建团队！");
             return true;
         }
 
-        // #测试注释
-//        if (playTime < 48) {
-//            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你的总游玩时长不足48小时，不能创建团队！");
-//            return true;
-//        }
+        // 消耗100级经验
+        if(!pluginConfig.debug) {
+            if (player.getLevel() < 100) {
+                player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你需要至少100级经验才能创建团队！谢谢");
+                return true;
+            } else {
+                player.setLevel(player.getLevel() - 100);
+            }
+        }
 
-
-        player.setLevel(player.getLevel() - 100);
         TeamManager.createTeam(name, player);
         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0f, 1.0f);
         player.sendMessage(ChatColor.GOLD + "``经验等级-100");
@@ -136,7 +139,7 @@ public class TeamService {
         int teamSize = TeamManager.getSize(mc_player.team);
 
         // #测试注释
-        if (teamSize < 5) {
+        if (teamSize < 5 && !pluginConfig.debug) {
             player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法选择颜色！");
             return true;
         }
@@ -185,7 +188,7 @@ public class TeamService {
         int teamSize = TeamManager.getSize(mc_player.team);
 
         // #测试注释
-        if (teamSize < 5) {
+        if (teamSize < 5 && !pluginConfig.debug) {
             player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设定团队简称！");
             return true;
         }
@@ -233,7 +236,7 @@ public class TeamService {
 
         int teamSize = TeamManager.getSize(teamName);
         // #测试注释
-        if (teamSize < 5) {
+        if (teamSize < 5 && !pluginConfig.debug) {
             player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设定团队简称！");
             return true;
         }
@@ -293,10 +296,10 @@ public class TeamService {
         int teamSize = TeamManager.getSize(team.getName());
 
         // #测试注释
-//        if (teamSize < 5) {
-//            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设置传送点！");
-//            return true;
-//        }
+        if (teamSize < 5 && !pluginConfig.debug) {
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人无法设置传送点！");
+            return true;
+        }
 
         // 获取玩家的脚下坐标
         Location location = player.getLocation();
@@ -1098,7 +1101,7 @@ public class TeamService {
         int teamSize = TeamManager.getSize(team);
 
         // #测试注释
-        if (teamSize < 5) {
+        if (teamSize < 5 && !pluginConfig.debug) {
             player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队规模小于5人设置QQ！");
             return true;
         }

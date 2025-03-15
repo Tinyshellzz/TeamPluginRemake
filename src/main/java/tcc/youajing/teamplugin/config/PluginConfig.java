@@ -2,6 +2,7 @@ package tcc.youajing.teamplugin.config;
 
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.YamlConfiguration;
 import tcc.youajing.teamplugin.ObjectPool;
 
@@ -9,6 +10,7 @@ import static tcc.youajing.teamplugin.ObjectPool.plugin;
 
 
 public class PluginConfig {
+    public boolean debug = false;
     public String db_host;
     public int db_port;
     public String db_user;
@@ -25,6 +27,9 @@ public class PluginConfig {
         YamlConfiguration yamlconfig = configWrapper.getConfig();
         ObjectPool.pluginConfig = new PluginConfig();
         PluginConfig config = ObjectPool.pluginConfig;
+        Boolean debug = yamlconfig.getBoolean("debug");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + ChatColor.GREEN + "Debug: " + debug);
+        config.debug = debug;
         config.db_host = yamlconfig.getString("db_host");
         config.db_port = yamlconfig.getInt("db_port");
         config.db_user = yamlconfig.getString("db_user");

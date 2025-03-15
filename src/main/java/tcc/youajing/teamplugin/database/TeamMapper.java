@@ -67,7 +67,7 @@ public class TeamMapper {
             stmt.setString(1, name);
             rs = stmt.executeQuery();
             if(rs.next()) {
-                team =  new Team(rs.getString(1), UUID.fromString(rs.getString(2)), rs.getString(3) == null ? null : UUID.fromString(rs.getString(3)), rs.getString(4), rs.getString(5) == null ? null : gson.fromJson(rs.getString(5), MyLocation.class), rs.getString(6), rs.getString(7), rs.getString(8) == null ? null : gson.fromJson(rs.getString(5), MyLocation.class));
+                team =  new Team(rs.getString(1), UUID.fromString(rs.getString(2)), rs.getString(3) == null ? null : UUID.fromString(rs.getString(3)), rs.getString(4), rs.getString(5) == null ? null : gson.fromJson(rs.getString(5), MyLocation.class), rs.getString(6), rs.getString(7), rs.getString(8) == null ? null : gson.fromJson(rs.getString(8), MyLocation.class));
             }
         } catch (SQLException e) {
             Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "TeamMapper.get_team_by_name:" + e.getMessage());
@@ -94,7 +94,7 @@ public class TeamMapper {
             stmt = conn.prepareStatement("SELECT * FROM teams");
             rs = stmt.executeQuery();
             while(rs.next()) {
-                Team team = new Team(rs.getString(1), UUID.fromString(rs.getString(2)), rs.getString(3) == null ? null : UUID.fromString(rs.getString(3)), rs.getString(4), rs.getString(5) == null ? null : gson.fromJson(rs.getString(5), MyLocation.class), rs.getString(6), rs.getString(7), rs.getString(8) == null ? null : gson.fromJson(rs.getString(5), MyLocation.class));
+                Team team = new Team(rs.getString(1), UUID.fromString(rs.getString(2)), rs.getString(3) == null ? null : UUID.fromString(rs.getString(3)), rs.getString(4), rs.getString(5) == null ? null : gson.fromJson(rs.getString(5), MyLocation.class), rs.getString(6), rs.getString(7), rs.getString(8) == null ? null : gson.fromJson(rs.getString(8), MyLocation.class));
                 teams.add(team);
             }
         } catch (SQLException e) {
