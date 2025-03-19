@@ -137,7 +137,7 @@ public class TeamCommand implements TabExecutor {
             case "visit":
                 return teamVisitService.visit(player, command, label, args);
             case "info":
-                return TeamInfoService.list(player, command, label, args);
+                return TeamInfoService.info(player, command, label, args);
         }
 
         return false;
@@ -288,7 +288,7 @@ public class TeamCommand implements TabExecutor {
 
                 case "tp": case "info":
                     // 查看团队成员的子命令，返回所有团队的名称
-                    if (!player.hasPermission("teamplugin.op")) {
+                    if (subcommand.equals("tp") && !player.hasPermission("teamplugin.op")) {
                         return null;
                     }
                     teamNames = new ArrayList<>();

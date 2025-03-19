@@ -8,12 +8,17 @@ import tcc.youajing.teamplugin.entities.Team;
 import static tcc.youajing.teamplugin.ObjectPool.mcPlayerMapper;
 
 public class TeamInfoService {
-    public static boolean list(Player player, Command command, String label, String[] args) {
+    public static boolean info(Player player, Command command, String label, String[] args) {
         if (args.length < 2) {
             player.sendMessage(ChatColor.YELLOW + "用法: /team info <名称>");
         }
 
         Team t = TeamManager.getTeam(args[1]);
+        if (t == null) {
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "该团队不存在！");
+            return true;
+        }
+
         String listName = t.getName();
         int size = TeamManager.getSize(t);
         String leaderName;
