@@ -3,7 +3,11 @@ package tcc.youajing.teamplugin.services;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
+import tcc.youajing.teamplugin.database.MCPlayerMapper;
+import tcc.youajing.teamplugin.entities.MCPlayer;
 import tcc.youajing.teamplugin.entities.Team;
+
+import java.util.List;
 
 import static tcc.youajing.teamplugin.ObjectPool.mcPlayerMapper;
 
@@ -21,9 +25,10 @@ public class TeamInfoService {
 
         String listName = t.getName();
         int size = TeamManager.getSize(t);
-        String leaderName;
+        String leaderName = null;
+        String fushouName = null;
         if (t.hasVicePresident()) {
-            String fushouName = mcPlayerMapper.get_user_by_uuid(t.vice_president).getName();
+            fushouName = mcPlayerMapper.get_user_by_uuid(t.vice_president).getName();
             leaderName = mcPlayerMapper.get_user_by_uuid(t.president).getName();
             player.sendMessage(ChatColor.GRAY + "- " + ChatColor.AQUA + ChatColor.BOLD + listName);
             player.sendMessage(ChatColor.GRAY + "      [" + size + "人] 队长: " + leaderName + "  副手：" + fushouName);
@@ -35,6 +40,24 @@ public class TeamInfoService {
             } else {
                 player.sendMessage(ChatColor.GRAY + "- " + ChatColor.AQUA + ChatColor.BOLD + listName);
             }
+        }
+
+        StringBuilder msg = new StringBuilder();
+        List<MCPlayer> usersByTeam = mcPlayerMapper.get_users_by_team(t.getName());
+        for(MCPlayer p : usersByTeam) {
+            if(!p.getName().equals(leaderName) && !p.getName().equals(fushouName)) {
+                if (msg.length() < 30) {
+                    msg.append(p.getName() + ", ");
+                } else {
+                    msg.append(p.getName());
+                    player.sendMessage(ChatColor.GOLD + msg.toString());
+                    msg.delete(0, msg.length());
+                }
+            }
+        }
+        if(msg.length() >= 2) {
+            msg.setLength(msg.length() - 2);
+            player.sendMessage(ChatColor.GOLD + msg.toString());
         }
 
         return true;

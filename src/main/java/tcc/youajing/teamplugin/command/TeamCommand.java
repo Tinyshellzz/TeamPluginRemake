@@ -179,6 +179,12 @@ public class TeamCommand implements TabExecutor {
                         teams.add(team1.getName());
                     }
                     return teams;
+                case "info":
+                    teams = new ArrayList<>();
+                    for (Team team1 : TeamManager.getTeams()) {
+                        teams.add(team1.getName());
+                    }
+                    return teams;
                 case "rename":
                     //无需补全
                     return null;
@@ -286,7 +292,7 @@ public class TeamCommand implements TabExecutor {
                     }
                     return teamNames;
 
-                case "tp": case "info":
+                case "tp":
                     // 查看团队成员的子命令，返回所有团队的名称
                     if (subcommand.equals("tp") && !player.hasPermission("teamplugin.op")) {
                         return null;
