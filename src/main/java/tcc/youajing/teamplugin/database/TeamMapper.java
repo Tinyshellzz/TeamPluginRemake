@@ -343,7 +343,7 @@ public class TeamMapper {
             conn.commit();
             stmt = conn.prepareStatement("SELECT name FROM teams WHERE visit IS NOT NULL");
             rs = stmt.executeQuery();
-            if(rs.next()) {
+            while(rs.next()) {
                 teamNames.add(rs.getString(1));
             }
         } catch (SQLException e) {

@@ -10,6 +10,10 @@ import tcc.youajing.teamplugin.entities.Team;
 import tcc.youajing.teamplugin.services.TeamManager;
 import tcc.youajing.teamplugin.utils.MyUtil;
 
+import java.util.List;
+
+import static tcc.youajing.teamplugin.ObjectPool.teamMapper;
+
 // 创建一个继承自PlaceholderExpansion的类
 public class TeampluginExpansion extends PlaceholderExpansion {
 
@@ -24,7 +28,7 @@ public class TeampluginExpansion extends PlaceholderExpansion {
     // 重写getIdentifier方法，返回一个唯一的标识符
     @Override
     public @NotNull String getIdentifier() {
-        return "teamplugin";
+        return "teamPlugin";
     }
 
     // 重写getAuthor方法，返回插件的作者
@@ -107,6 +111,16 @@ public class TeampluginExpansion extends PlaceholderExpansion {
                 return "『"+ team.getAbbr() + "』";
             default:
                 // 如果占位符名不匹配，返回null
+                List<Team> teams = teamMapper.get_teams();
+                for(Team t: teams) {
+                    if(identifier.equalsIgnoreCase(t.getName() + "_leaders")) {
+                        StringBuilder msg = new StringBuilder("队长: " + Bukkit.getOfflinePlayer(t.getPresident()).getName());
+                        if(t.getVicePresident() != null) msg.append("副队: ").append(Bukkit.getOfflinePlayer(t.getVicePresident()).getName());
+                        return msg.toString();
+                    } else if(identifier.equalsIgnoreCase(t.getName() + "_leader")) {
+                        return Bukkit.getOfflinePlayer(t.getPresident()).getName();
+                    }
+                }
                 return null;
         }
     }

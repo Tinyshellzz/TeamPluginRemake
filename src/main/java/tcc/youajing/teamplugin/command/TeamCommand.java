@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import tcc.youajing.teamplugin.entities.MCPlayer;
 import tcc.youajing.teamplugin.entities.Team;
+import tcc.youajing.teamplugin.services.TeamInfoService;
 import tcc.youajing.teamplugin.services.TeamManager;
 import tcc.youajing.teamplugin.services.TeamService;
 
@@ -135,6 +136,8 @@ public class TeamCommand implements TabExecutor {
                 return teamVisitService.setVisit(player, command, label, args);
             case "visit":
                 return teamVisitService.visit(player, command, label, args);
+            case "info":
+                return TeamInfoService.list(player, command, label, args);
         }
 
         return false;
@@ -152,7 +155,7 @@ public class TeamCommand implements TabExecutor {
         // 判断命令参数的长度
         if (args.length == 1) {
             // 如果只有一个参数，返回所有子命令的列表
-            return Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite" , "accept" , "reject" , "kick", "color", "abbr","list", "members" ,"home","online", "quit", "qq", "setvisit", "visit");
+            return Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite" , "accept" , "reject" , "kick", "color", "abbr","list", "members" ,"home","online", "quit", "qq", "setvisit", "visit", "info");
         } else if (args.length == 2) {
             // 如果有两个参数，根据第一个参数返回不同的补全列表
             String subcommand = args[0].toLowerCase();
@@ -283,7 +286,7 @@ public class TeamCommand implements TabExecutor {
                     }
                     return teamNames;
 
-                case "tp":
+                case "tp": case "info":
                     // 查看团队成员的子命令，返回所有团队的名称
                     if (!player.hasPermission("teamplugin.op")) {
                         return null;

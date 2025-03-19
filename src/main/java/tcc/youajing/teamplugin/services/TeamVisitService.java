@@ -43,7 +43,7 @@ public class TeamVisitService {
         // 消耗30级经验
         if(!pluginConfig.debug) {
             if (player.getLevel() < 30) {
-                player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你需要至少30级经验才能创建团队！谢谢");
+                player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你需要至少30级经验才能访问其他组织！谢谢");
                 return true;
             } else {
                 player.setLevel(player.getLevel() - 30);
