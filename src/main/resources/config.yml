@@ -1,0 +1,9 @@
+debug: false
+db_host: '127.0.0.1'
+db_port: 3306
+db_user: "team"
+db_passwd: "TccServer2024@"
+db_database: "team"
+# play time requirement of counting as an active player, 单位s
+active_playtime: 25200
+team_qq_requirement: 5
