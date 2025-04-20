@@ -688,62 +688,64 @@ public class TeamService {
             player.sendMessage(String.valueOf(ChatColor.YELLOW) + "如果要翻页的话: /team list <页码>");
         }
 
-        List<Team> teams = TeamManager.getTeams();
-        String var10001;
-        if (teams.isEmpty()) {
-            var10001 = String.valueOf(ChatColor.DARK_RED);
-            player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "目前没有任何团队！");
-            return true;
-        } else {
-            teams.sort(Comparator.comparingInt((tx) -> {
-                return TeamManager.getSize(tx);
-            }));
-            Collections.reverse(teams);
-            int page = 1;
-            if (args.length > 1) {
-                try {
-                    page = Integer.parseInt(args[1]);
-                } catch (NumberFormatException var15) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<Team> teams = TeamManager.getTeams();
+                String var10001;
+                if (teams.isEmpty()) {
                     var10001 = String.valueOf(ChatColor.DARK_RED);
-                    player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "页码必须是一个整数！");
-                    return true;
-                }
-            }
+                    player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "目前没有任何团队！");
+                } else {
+                    teams.sort(Comparator.comparingInt((tx) -> {
+                        return TeamManager.getSize(tx);
+                    }));
+                    Collections.reverse(teams);
+                    int page = 1;
+                    if (args.length > 1) {
+                        try {
+                            page = Integer.parseInt(args[1]);
+                        } catch (NumberFormatException var15) {
+                            var10001 = String.valueOf(ChatColor.DARK_RED);
+                            player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "页码必须是一个整数！");
+                        }
+                    }
 
-            int pageSize = 10;
-            int totalPages = (teams.size() - 1) / pageSize + 1;
-            if (page >= 1 && page <= totalPages) {
-                player.sendMessage(String.valueOf(ChatColor.GOLD) + "已注册的团队列表（第" + page + "页/共" + totalPages + "页）：");
+                    int pageSize = 10;
+                    int totalPages = (teams.size() - 1) / pageSize + 1;
+                    if (page >= 1 && page <= totalPages) {
+                        player.sendMessage(String.valueOf(ChatColor.GOLD) + "已注册的团队列表（第" + page + "页/共" + totalPages + "页）：");
 
-                for(int i = (page - 1) * pageSize; i < page * pageSize && i < teams.size(); ++i) {
-                    Team t = (Team)teams.get(i);
-                    String listName = t.getName();
-                    int size = TeamManager.getSize(t);
-                    String leaderName;
-                    if (t.hasVicePresident()) {
-                        String fushouName = ObjectPool.mcPlayerMapper.get_user_by_uuid(t.vice_president).getName();
-                        leaderName = ObjectPool.mcPlayerMapper.get_user_by_uuid(t.president).getName();
-                        var10001 = String.valueOf(ChatColor.GRAY);
-                        player.sendMessage(var10001 + "- " + String.valueOf(ChatColor.AQUA) + String.valueOf(ChatColor.BOLD) + listName);
-                        player.sendMessage(String.valueOf(ChatColor.GRAY) + "      [" + size + "人] 队长: " + leaderName + "  副手：" + fushouName);
-                    } else if (t.hasPresident()) {
-                        leaderName = ObjectPool.mcPlayerMapper.get_user_by_uuid(t.president).getName();
-                        var10001 = String.valueOf(ChatColor.GRAY);
-                        player.sendMessage(var10001 + "- " + String.valueOf(ChatColor.AQUA) + String.valueOf(ChatColor.BOLD) + listName);
-                        player.sendMessage(String.valueOf(ChatColor.GRAY) + "      [" + size + "人] 队长: " + leaderName);
+                        for (int i = (page - 1) * pageSize; i < page * pageSize && i < teams.size(); ++i) {
+                            Team t = (Team) teams.get(i);
+                            String listName = t.getName();
+                            int size = TeamManager.getSize(t);
+                            String leaderName;
+                            if (t.hasVicePresident()) {
+                                String fushouName = ObjectPool.mcPlayerMapper.get_user_by_uuid(t.vice_president).getName();
+                                leaderName = ObjectPool.mcPlayerMapper.get_user_by_uuid(t.president).getName();
+                                var10001 = String.valueOf(ChatColor.GRAY);
+                                player.sendMessage(var10001 + "- " + String.valueOf(ChatColor.AQUA) + String.valueOf(ChatColor.BOLD) + listName);
+                                player.sendMessage(String.valueOf(ChatColor.GRAY) + "      [" + size + "人] 队长: " + leaderName + "  副手：" + fushouName);
+                            } else if (t.hasPresident()) {
+                                leaderName = ObjectPool.mcPlayerMapper.get_user_by_uuid(t.president).getName();
+                                var10001 = String.valueOf(ChatColor.GRAY);
+                                player.sendMessage(var10001 + "- " + String.valueOf(ChatColor.AQUA) + String.valueOf(ChatColor.BOLD) + listName);
+                                player.sendMessage(String.valueOf(ChatColor.GRAY) + "      [" + size + "人] 队长: " + leaderName);
+                            } else {
+                                var10001 = String.valueOf(ChatColor.GRAY);
+                                player.sendMessage(var10001 + "- " + String.valueOf(ChatColor.AQUA) + String.valueOf(ChatColor.BOLD) + listName);
+                            }
+                        }
                     } else {
-                        var10001 = String.valueOf(ChatColor.GRAY);
-                        player.sendMessage(var10001 + "- " + String.valueOf(ChatColor.AQUA) + String.valueOf(ChatColor.BOLD) + listName);
+                        var10001 = String.valueOf(ChatColor.DARK_RED);
+                        player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "页码必须在1到" + totalPages + "之间！");
+
                     }
                 }
-
-                return true;
-            } else {
-                var10001 = String.valueOf(ChatColor.DARK_RED);
-                player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "页码必须在1到" + totalPages + "之间！");
-                return true;
             }
-        }
+        }).start();
+        return true;
     }
 
     public boolean members(Player player, Command command, String label, String[] args) {
