@@ -9,18 +9,25 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.Plugin;
 import tcc.youajing.teamplugin.ObjectPool;
 import tcc.youajing.teamplugin.entities.MCPlayer;
 import tcc.youajing.teamplugin.entities.Team;
+import tcc.youajing.teamplugin.services.TeamBanService;
 import tcc.youajing.teamplugin.services.TeamInfoService;
 import tcc.youajing.teamplugin.services.TeamManager;
+import tcc.youajing.teamplugin.utils.MyUtil;
 
 public class TeamCommand implements TabExecutor {
     private Plugin plugin;
@@ -30,7 +37,43 @@ public class TeamCommand implements TabExecutor {
     }
 
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player player)) {
+        if (args.length >= 1) {  // 所有命令发送者都能用的命令
+            Matcher _m = Pattern.compile("^.*CraftRemoteConsoleCommandSender.*$").matcher(sender.toString());
+            switch (args[0]) {
+                case "ban":
+                    if (!(sender instanceof ConsoleCommandSender || _m.find() || sender.isOp() || sender.hasPermission("team.ban"))) {
+                        sender.sendMessage(ChatColor.RED + "只有控制台, op以及拥有team.ban权限的玩家才能使用该命令");
+                        return true;
+                    }
+
+                    if (args.length < 2) {
+                        sender.sendMessage(ChatColor.RED + "参数不足");
+                        return true;
+                    }
+
+                    switch (args[1]) {
+                        case "visit":
+                            return TeamBanService.banVisit(sender, command, label, args);
+                    }
+                case "unban":
+                    if (!(sender instanceof ConsoleCommandSender || _m.find() || sender.isOp() || sender.hasPermission("team.ban"))) {
+                        sender.sendMessage(ChatColor.RED + "只有控制台, op以及拥有team.ban权限的玩家才能使用该命令");
+                        return true;
+                    }
+
+                    if (args.length < 2) {
+                        sender.sendMessage(ChatColor.RED + "参数不足");
+                        return true;
+                    }
+
+                    switch (args[1]) {
+                        case "visit":
+                            return TeamBanService.unbanVisit(sender, command, label, args);
+                    }
+            }
+        }
+
+        if (!(sender instanceof Player player)) {   // 非玩家使用的命令
             switch (args[0].toLowerCase()) {
                 case "get":
                     Bukkit.getConsoleSender().sendMessage("TeamCommand.get" + sender.toString());
@@ -45,7 +88,7 @@ public class TeamCommand implements TabExecutor {
             player.sendMessage(String.valueOf(ChatColor.YELLOW) + "什么！不会用Team插件？？");
             player.sendMessage(String.valueOf(ChatColor.GOLD) + "快给我去看《TCC社区游玩手册》！！！");
             return true;
-        } else {
+        } else {    // 玩家使用的命令
             switch (args[0].toLowerCase()) {
                 case "get":
                     Bukkit.getConsoleSender().sendMessage("TeamCommand.get" + sender.toString());
@@ -125,6 +168,10 @@ public class TeamCommand implements TabExecutor {
                     return ObjectPool.teamVisitService.visit(player, command, label, args);
                 case "info":
                     return TeamInfoService.info(player, command, label, args);
+                case "ban":
+                    return TeamBanService.banVisit(player, command, label, args);
+                case "unban":
+                    return TeamBanService.unbanVisit(player, command, label, args);
                 default:
                     return false;
             }
@@ -135,19 +182,18 @@ public class TeamCommand implements TabExecutor {
         if (!(sender instanceof Player player)) {
             return null;
         } else if (args.length == 1) {
-            return Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite", "accept", "reject", "kick", "color", "abbr", "list", "members", "home", "online", "quit", "qq", "setvisit", "visit", "info");
+            Matcher _m = Pattern.compile("^.*CraftRemoteConsoleCommandSender.*$").matcher(sender.toString());
+            String input = args[0].toLowerCase();
+            if (!(sender instanceof ConsoleCommandSender || _m.find() || sender.isOp() || sender.hasPermission("team.use"))) {
+                return MyUtil.tabComplete(Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite", "accept", "reject", "kick", "color", "abbr", "list", "members", "home", "online", "quit", "qq", "setvisit", "visit", "info"), input);
+            }
+
+            return MyUtil.tabComplete(Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite", "accept", "reject", "kick", "color", "abbr", "list", "members", "home", "online", "quit", "qq", "setvisit", "visit", "info", "ban", "unban"), input);
         } else if (args.length == 2) {
             String subcommand = args[0].toLowerCase();
+            ArrayList<String> res = new ArrayList<>();
+            String input = args[1].toLowerCase();
             Team team = null;
-            List<String> teamNames = null;
-            ArrayList teams;
-            ArrayList members;
-            Iterator var20;
-            Team team1;
-            Iterator var23;
-            MCPlayer mcPlayer;
-            Iterator var26;
-            String playerkicked;
             Team t;
             switch (subcommand) {
                 case "new":
@@ -155,28 +201,13 @@ public class TeamCommand implements TabExecutor {
                 case "del":
                     team = TeamManager.getTeamByPlayer(player);
                     if (team != null && team.isPresident(player)) {
-                        teams = new ArrayList();
-                        var20 = TeamManager.getTeams().iterator();
-
-                        while(var20.hasNext()) {
-                            team1 = (Team)var20.next();
-                            teams.add(team1.getName());
-                        }
-
-                        return teams;
-                    } else {
-                        return null;
+                        for (Team t1 : TeamManager.getTeams()) res.add(t1.getName());
+                        return MyUtil.tabComplete(res, input);
                     }
+                    return null;
                 case "info":
-                    teams = new ArrayList();
-                    var20 = TeamManager.getTeams().iterator();
-
-                    while(var20.hasNext()) {
-                        team1 = (Team)var20.next();
-                        teams.add(team1.getName());
-                    }
-
-                    return teams;
+                    for (Team t1 : TeamManager.getTeams()) res.add(t1.getName());
+                    return MyUtil.tabComplete(res, input);
                 case "rename":
                     return null;
                 case "sethome":
@@ -189,17 +220,13 @@ public class TeamCommand implements TabExecutor {
                         return null;
                     }
 
-                    List<String> players = new ArrayList();
-                    Iterator var21 = Bukkit.getOnlinePlayers().iterator();
-
-                    while(var21.hasNext()) {
-                        Player p = (Player)var21.next();
+                    for (Player p : Bukkit.getOnlinePlayers()) {
                         if (!TeamManager.isMember(team, p)) {
-                            players.add(p.getName());
+                            res.add(p.getName());
                         }
                     }
 
-                    return players;
+                    return MyUtil.tabComplete(res, input);
                 case "kick":
                     team = TeamManager.getTeamByPlayer(player);
                     if (team == null) {
@@ -209,36 +236,27 @@ public class TeamCommand implements TabExecutor {
                             return null;
                         }
 
-                        members = new ArrayList();
-                        var23 = TeamManager.getMembers(team).iterator();
-
-                        while(var23.hasNext()) {
-                            mcPlayer = (MCPlayer)var23.next();
-                            playerkicked = Bukkit.getOfflinePlayer(mcPlayer.uuid).getName();
+                        for (MCPlayer p : TeamManager.getMembers(team)) {
+                            String playerkicked = Bukkit.getOfflinePlayer(p.uuid).getName();
                             if (playerkicked != null && !playerkicked.equals(player.getName())) {
-                                members.add(playerkicked);
+                                res.add(playerkicked);
                             }
                         }
 
-                        return members;
+                        return MyUtil.tabComplete(res, input);
                     }
                 case "set副手":
                     team = TeamManager.getTeamByPlayer(player);
                     if (team != null && team.isPresident(player)) {
-                        members = new ArrayList();
-                        var23 = TeamManager.getMembers(team).iterator();
-
-                        while(var23.hasNext()) {
-                            mcPlayer = (MCPlayer)var23.next();
-                            playerkicked = Bukkit.getOfflinePlayer(mcPlayer.uuid).getName();
+                        for (MCPlayer p : TeamManager.getMembers(team)) {
+                            String playerkicked = Bukkit.getOfflinePlayer(p.uuid).getName();
                             if (playerkicked != null && !playerkicked.equals(player.getName())) {
-                                members.add(playerkicked);
+                                res.add(playerkicked);
                             }
                         }
 
-                        return members;
+                        return MyUtil.tabComplete(res, input);
                     }
-
                     return null;
                 case "unset副手":
                     return null;
@@ -251,7 +269,7 @@ public class TeamCommand implements TabExecutor {
                             return null;
                         }
 
-                        return new ArrayList(ObjectPool.colors.keySet());
+                        return MyUtil.tabComplete(new ArrayList(ObjectPool.colors.keySet()), input);
                     }
                 case "abbr":
                     team = TeamManager.getTeamByPlayer(player);
@@ -263,16 +281,13 @@ public class TeamCommand implements TabExecutor {
                         }
 
                         char[] chars = team.getName().toCharArray();
-                        List<String> abbrs = new ArrayList();
-                        char[] var27 = chars;
-                        int var30 = chars.length;
 
-                        for(int var31 = 0; var31 < var30; ++var31) {
-                            char c = var27[var31];
-                            abbrs.add(String.valueOf(c));
+                        for (int i = 0; i < chars.length; ++i) {
+                            char c = chars[i];
+                            res.add(String.valueOf(c));
                         }
 
-                        return abbrs;
+                        return MyUtil.tabComplete(res, input);
                     }
                 case "list":
                     return null;
@@ -283,56 +298,62 @@ public class TeamCommand implements TabExecutor {
                 case "reject":
                     return null;
                 case "members":
-                    teamNames = new ArrayList();
-                    var26 = TeamManager.getTeams().iterator();
-
-                    while(var26.hasNext()) {
-                        t = (Team)var26.next();
-                        teamNames.add(t.getName());
+                    for (Team t1 : TeamManager.getTeams()) {
+                        res.add(t1.getName());
                     }
 
-                    return teamNames;
+                    return MyUtil.tabComplete(res, input);
                 case "tp":
                     if (subcommand.equals("tp") && !player.hasPermission("teamplugin.op")) {
                         return null;
                     }
 
-                    teamNames = new ArrayList();
-                    var26 = TeamManager.getTeams().iterator();
-
-                    while(var26.hasNext()) {
-                        t = (Team)var26.next();
-                        if (t.getHome() != null) {
-                            teamNames.add(t.getName());
-                        }
+                    for (Team t1 : TeamManager.getTeams()) {
+                        res.add(t1.getName());
                     }
 
-                    return teamNames;
+                    return MyUtil.tabComplete(res, input);
                 case "enabbr":
                     if (!player.hasPermission("teamplugin.op")) {
                         return null;
                     }
 
-                    ArrayList teamNames1 = new ArrayList();
-                    Iterator var17 = TeamManager.getTeams().iterator();
-
-                    while(var17.hasNext()) {
-                        t = (Team)var17.next();
-                        if (t.getHome() != null) {
-                            teamNames1.add(t.getName());
-                        }
+                    for (Team t1 : TeamManager.getTeams()) {
+                        res.add(t1.getName());
                     }
 
-                    return teamNames1;
+                    return MyUtil.tabComplete(res, input);
                 case "setvisit":
                     return null;
                 case "visit":
-                    return ObjectPool.teamMapper.get_visit_teamName_list();
+                    return MyUtil.tabComplete(ObjectPool.teamMapper.get_visit_teamName_list(), input);
+                case "ban":
+                case "unban":
+                    return MyUtil.tabComplete(Arrays.asList("visit"), input);
                 default:
                     return null;
             }
-        } else {
-            return null;
+        } else if (args.length == 3) {
+            String subcommand = args[0].toLowerCase();
+            ArrayList<String> res = new ArrayList<>();
+
+            switch (subcommand) {
+                case "ban":
+                case "unban":
+                    String subcommand2 = args[1].toLowerCase();
+                    String input = args[2].toLowerCase();
+
+                    switch (subcommand2) {
+                        case "visit":
+                            for (Team t1 : TeamManager.getTeams()) {
+                                res.add(t1.getName());
+                            }
+
+                            return MyUtil.tabComplete(res, input);
+                    }
+            }
         }
+
+        return null;
     }
 }

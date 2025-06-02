@@ -18,6 +18,10 @@ public class PluginConfig {
     public String db_user;
     public String db_passwd;
     public String db_database;
+    public int team_create_level_requirement;
+    public int team_create_play_time_requirement;
+    public int team_visit_level_requirement;
+    public int team_visit_level_requirement_for_new_player;
     public int active_playtime = 25200;
     public int team_qq_requirement = 5;
     private static ConfigWrapper configWrapper;
@@ -40,6 +44,10 @@ public class PluginConfig {
         config.db_user = yamlconfig.getString("db_user");
         config.db_passwd = yamlconfig.getString("db_passwd");
         config.db_database = yamlconfig.getString("db_database");
+        config.team_create_level_requirement = yamlconfig.getInt("team_create_level_requirement");
+        config.team_create_play_time_requirement = yamlconfig.getInt("team_create_play_time_requirement");
+        config.team_visit_level_requirement = yamlconfig.getInt("team_visit_level_requirement");
+        config.team_visit_level_requirement_for_new_player = yamlconfig.getInt("team_visit_level_requirement_for_new_player");
         String active_playtime_str = yamlconfig.getString("active_playtime");
         if (active_playtime_str != null) {
             config.active_playtime = Integer.parseInt(active_playtime_str);

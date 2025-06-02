@@ -37,14 +37,12 @@ public class TeamInfoService {
                 if (t.hasVicePresident()) {
                     fushouName = ObjectPool.mcPlayerMapper.get_user_by_uuid(t.vice_president).getName();
                     leaderName = ObjectPool.mcPlayerMapper.get_user_by_uuid(t.president).getName();
-                    var10001 = String.valueOf(ChatColor.GRAY);
-                    player.sendMessage(var10001 + "- " + String.valueOf(ChatColor.AQUA) + String.valueOf(ChatColor.BOLD) + listName);
-                    player.sendMessage(String.valueOf(ChatColor.GRAY) + "      [" + size + "人] 队长: " + leaderName + "  副手：" + fushouName);
+                    player.sendMessage(ChatColor.GRAY + "- " + String.valueOf(ChatColor.AQUA) + String.valueOf(ChatColor.BOLD) + listName);
+                    player.sendMessage(ChatColor.GRAY + "      [" + size + "人] 队长: " + leaderName + "  副手：" + fushouName);
                 } else if (t.hasPresident()) {
                     leaderName = ObjectPool.mcPlayerMapper.get_user_by_uuid(t.president).getName();
-                    var10001 = String.valueOf(ChatColor.GRAY);
-                    player.sendMessage(var10001 + "- " + String.valueOf(ChatColor.AQUA) + String.valueOf(ChatColor.BOLD) + listName);
-                    player.sendMessage(String.valueOf(ChatColor.GRAY) + "      [" + size + "人] 队长: " + leaderName);
+                    player.sendMessage(ChatColor.GRAY + "- " + ChatColor.AQUA + String.valueOf(ChatColor.BOLD) + listName);
+                    player.sendMessage(ChatColor.GRAY + "      [" + size + "人] 队长: " + leaderName);
                 } else {
                     var10001 = String.valueOf(ChatColor.GRAY);
                     player.sendMessage(var10001 + "- " + String.valueOf(ChatColor.AQUA) + String.valueOf(ChatColor.BOLD) + listName);

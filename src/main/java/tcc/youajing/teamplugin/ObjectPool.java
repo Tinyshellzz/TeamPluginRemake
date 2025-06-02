@@ -10,6 +10,7 @@ import java.util.HashMap;
 import tcc.youajing.teamplugin.config.PluginConfig;
 import tcc.youajing.teamplugin.database.MCPlayerMapper;
 import tcc.youajing.teamplugin.database.TeamMapper;
+import tcc.youajing.teamplugin.database.VisitBanListMapper;
 import tcc.youajing.teamplugin.services.TeamService;
 import tcc.youajing.teamplugin.services.TeamVisitService;
 
@@ -18,6 +19,7 @@ public class ObjectPool {
     public static PluginConfig pluginConfig;
     public static Gson gson = new Gson();
     public static MCPlayerMapper mcPlayerMapper;
+    public static VisitBanListMapper visitBanListMapper;
     public static TeamMapper teamMapper;
     public static TeamService teamService;
     public static TeamVisitService teamVisitService;

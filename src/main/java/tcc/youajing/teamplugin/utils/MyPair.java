@@ -1,4 +1,4 @@
-package com.tinyshellzz.separatedLootChest.utils;
+package tcc.youajing.teamplugin.utils;
 
 public class MyPair<T1, T2> {
     private T1 first;

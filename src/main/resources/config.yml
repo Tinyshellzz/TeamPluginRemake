@@ -4,6 +4,14 @@ db_port: 3306
 db_user: "team"
 db_passwd: "TccServer2024@"
 db_database: "team"
+# 创建team所需的经验
+team_create_level_requirement: 50
+# 创建team所需的游玩时间
+team_create_play_time_requirement: 24
+# team visit所需的经验
+team_visit_level_requirement: 30
+# 新玩家，team visit所需经验
+team_visit_level_requirement_for_new_player: 1
 # play time requirement of counting as an active player, 单位s
 active_playtime: 25200
 team_qq_requirement: 5

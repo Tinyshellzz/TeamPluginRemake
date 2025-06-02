@@ -1,4 +1,4 @@
-package com.tinyshellzz.separatedLootChest.utils.rcon;
+package tcc.youajing.teamplugin.utils.rcon;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

@@ -1,4 +1,4 @@
-package com.tinyshellzz.separatedLootChest.utils.rcon;
+package tcc.youajing.teamplugin.utils.rcon;
 
 import java.io.IOException;
 import java.util.logging.Level;

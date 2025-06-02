@@ -30,29 +30,17 @@ public class TeamMapper {
             stmt = conn.prepareStatement("CREATE TABLE IF NOT EXISTS teams (name Varchar(48),president Char(36),vice_president Char(36),qq Char(12),home Varchar(128),color Char(7),abbr Char(16),visit Varchar(128),UNIQUE KEY (name),KEY (president),KEY (vice_president),KEY (qq),KEY (abbr),KEY (visit)) ENGINE=InnoDB CHARACTER SET=utf8;");
             stmt.executeUpdate();
             conn.commit();
-        } catch (SQLException var13) {
-            SQLException e = var13;
-            ConsoleCommandSender var10000 = Bukkit.getConsoleSender();
-            String var10001 = String.valueOf(ChatColor.RED);
-            var10000.sendMessage(var10001 + "TeamMapper.TeamMapper:" + e.getMessage());
+        } catch (SQLException e) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "TeamMapper.TeamMapper:" + e.getMessage());
         } finally {
             try {
-                if (stmt != null) {
-                    stmt.close();
-                }
-
-                if (rs != null) {
-                    ((ResultSet)rs).close();
-                }
-
-                if (conn != null) {
-                    conn.close();
-                }
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+                if (conn != null) conn.close();
             } catch (SQLException var12) {
             }
 
         }
-
     }
 
     public Team get_team_by_name(String name) {

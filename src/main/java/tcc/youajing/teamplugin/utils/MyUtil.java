@@ -1,4 +1,4 @@
-package com.tinyshellzz.separatedLootChest.utils;
+package tcc.youajing.teamplugin.utils;
 
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;

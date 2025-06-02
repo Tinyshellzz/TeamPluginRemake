@@ -13,6 +13,7 @@ import tcc.youajing.teamplugin.command.TeamCommand;
 import tcc.youajing.teamplugin.config.PluginConfig;
 import tcc.youajing.teamplugin.database.MCPlayerMapper;
 import tcc.youajing.teamplugin.database.TeamMapper;
+import tcc.youajing.teamplugin.database.VisitBanListMapper;
 import tcc.youajing.teamplugin.listener.PlayerJoinListener;
 import tcc.youajing.teamplugin.placeholder.TeampluginExpansion;
 import tcc.youajing.teamplugin.services.TeamService;
@@ -24,21 +25,11 @@ public final class TeamPlugin extends JavaPlugin {
     }
 
     public void onEnable() {
-        ConsoleCommandSender var10000 = Bukkit.getConsoleSender();
-        String var10001 = String.valueOf(ChatColor.DARK_AQUA);
-        var10000.sendMessage(var10001 + "[Team]" + String.valueOf(ChatColor.GREEN) + "######################");
-        var10000 = Bukkit.getConsoleSender();
-        var10001 = String.valueOf(ChatColor.DARK_AQUA);
-        var10000.sendMessage(var10001 + "[Team]" + String.valueOf(ChatColor.GREEN) + "#                    #");
-        var10000 = Bukkit.getConsoleSender();
-        var10001 = String.valueOf(ChatColor.DARK_AQUA);
-        var10000.sendMessage(var10001 + "[Team]" + String.valueOf(ChatColor.GREEN) + "#来自尤精的插件已启动#");
-        var10000 = Bukkit.getConsoleSender();
-        var10001 = String.valueOf(ChatColor.DARK_AQUA);
-        var10000.sendMessage(var10001 + "[Team]" + String.valueOf(ChatColor.GREEN) + "#                    #");
-        var10000 = Bukkit.getConsoleSender();
-        var10001 = String.valueOf(ChatColor.DARK_AQUA);
-        var10000.sendMessage(var10001 + "[Team]" + String.valueOf(ChatColor.GREEN) + "######################");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + String.valueOf(ChatColor.GREEN) + "######################");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + String.valueOf(ChatColor.GREEN) + "#                    #");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + String.valueOf(ChatColor.GREEN) + "#来自尤精的插件已启动#");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + String.valueOf(ChatColor.GREEN) + "#                    #");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + String.valueOf(ChatColor.GREEN) + "######################");
         this.init();
         this.register();
         RunTask.run();
@@ -51,35 +42,26 @@ public final class TeamPlugin extends JavaPlugin {
         ObjectPool.teamMapper = new TeamMapper();
         ObjectPool.teamService = new TeamService();
         ObjectPool.teamVisitService = new TeamVisitService();
+        ObjectPool.visitBanListMapper = new VisitBanListMapper();
     }
 
     public void register() {
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
         this.getCommand("team").setExecutor(new TeamCommand(this));
-        if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
-            (new TeampluginExpansion(this)).register();
-            ConsoleCommandSender var10000 = Bukkit.getConsoleSender();
-            String var10001 = String.valueOf(ChatColor.DARK_AQUA);
-            var10000.sendMessage(var10001 + "[Team]" + String.valueOf(ChatColor.GREEN) + "PlaceholderAPI 准备就绪");
-        }
 
+
+        // 注册 PlaceHolder
+        if (this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            new TeampluginExpansion(this).register();
+            Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[TccTools]" + ChatColor.GREEN + "PlaceholderAPI 准备就绪");
+        }
     }
 
     public void onDisable() {
-        ConsoleCommandSender var10000 = Bukkit.getConsoleSender();
-        String var10001 = String.valueOf(ChatColor.DARK_AQUA);
-        var10000.sendMessage(var10001 + "[Team]" + String.valueOf(ChatColor.DARK_RED) + "######################");
-        var10000 = Bukkit.getConsoleSender();
-        var10001 = String.valueOf(ChatColor.DARK_AQUA);
-        var10000.sendMessage(var10001 + "[Team]" + String.valueOf(ChatColor.DARK_RED) + "#                    #");
-        var10000 = Bukkit.getConsoleSender();
-        var10001 = String.valueOf(ChatColor.DARK_AQUA);
-        var10000.sendMessage(var10001 + "[Team]" + String.valueOf(ChatColor.DARK_RED) + "#来自尤精的插件已关闭#");
-        var10000 = Bukkit.getConsoleSender();
-        var10001 = String.valueOf(ChatColor.DARK_AQUA);
-        var10000.sendMessage(var10001 + "[Team]" + String.valueOf(ChatColor.DARK_RED) + "#                    #");
-        var10000 = Bukkit.getConsoleSender();
-        var10001 = String.valueOf(ChatColor.DARK_AQUA);
-        var10000.sendMessage(var10001 + "[Team]" + String.valueOf(ChatColor.DARK_RED) + "######################");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + String.valueOf(ChatColor.DARK_RED) + "######################");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + String.valueOf(ChatColor.DARK_RED) + "#                    #");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + String.valueOf(ChatColor.DARK_RED) + "#来自尤精的插件已关闭#");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + String.valueOf(ChatColor.DARK_RED) + "#                    #");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + String.valueOf(ChatColor.DARK_RED) + "######################");
     }
 }

@@ -1,4 +1,4 @@
-package com.tinyshellzz.separatedLootChest.utils.rcon;
+package tcc.youajing.teamplugin.utils.rcon;
 
 import com.google.common.base.Charsets;
 

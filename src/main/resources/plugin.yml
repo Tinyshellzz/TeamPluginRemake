@@ -11,3 +11,7 @@ commands:
     description: Manage your team.
     usage: /team ...
     default: true
+permissions:
+  team.use:
+    default: op
+    description: Allows using /team ban

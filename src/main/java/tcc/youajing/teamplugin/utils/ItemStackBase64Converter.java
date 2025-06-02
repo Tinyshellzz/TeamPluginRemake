@@ -1,4 +1,4 @@
-package com.tinyshellzz.separatedLootChest.utils;
+package tcc.youajing.teamplugin.utils;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

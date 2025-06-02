@@ -30,6 +30,8 @@ import tcc.youajing.teamplugin.entities.Team;
 import tcc.youajing.teamplugin.placeholder.TeampluginExpansion;
 import tcc.youajing.teamplugin.utils.MyUtil;
 
+import static tcc.youajing.teamplugin.ObjectPool.pluginConfig;
+
 public class TeamService {
     private HashMap<Player, Team> invitations = new HashMap();
 
@@ -44,8 +46,7 @@ public class TeamService {
             String targetName = args[1];
             OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(targetName);
             if (targetPlayer == null) {
-                String var10001 = String.valueOf(ChatColor.DARK_RED);
-                player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "玩家不存在！");
+                player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "玩家不存在！");
                 return true;
             } else {
                 Bukkit.getConsoleSender().sendMessage("TeamService.get get_user_by_uuid" + player.toString());
@@ -77,62 +78,49 @@ public class TeamService {
         } else {
             int playTime = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
             MCPlayer mc_player = ObjectPool.mcPlayerMapper.get(player);
-            String var10001;
             if (mc_player != null && mc_player.team != null) {
-                var10001 = String.valueOf(ChatColor.DARK_RED);
-                player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "你已经在一个团队中了！请先退出你所在的团队才能使用此指令！");
+                player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你已经在一个团队中了！请先退出你所在的团队才能使用此指令！");
                 return true;
             } else {
                 String name = args[1];
                 if (!name.matches("[a-zA-Z0-9_一-龥]+")) {
-                    var10001 = String.valueOf(ChatColor.DARK_RED);
-                    player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "团队名称只能包含字母、数字、下划线和中文！");
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队名称只能包含字母、数字、下划线和中文！");
                     return true;
                 } else {
                     int length = 0;
-                    char[] var9 = name.toCharArray();
-                    int var10 = var9.length;
-
-                    for(int var11 = 0; var11 < var10; ++var11) {
-                        char c = var9[var11];
-                        if (c >= 19968 && c <= '龥') {
+                    for (char c : name.toCharArray()) {
+                        if (c >= '\u4e00' && c <= '\u9fa5') {
                             length += 2;
                         } else {
-                            ++length;
+                            length += 1;
                         }
                     }
 
                     if (length > 12) {
-                        var10001 = String.valueOf(ChatColor.DARK_RED);
-                        player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "团队名称不得超过六个汉字（12个字符）！");
+                        player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "团队名称不得超过六个汉字（12个字符）！");
                         return true;
                     } else if (ObjectPool.teamMapper.exists(name)) {
-                        var10001 = String.valueOf(ChatColor.DARK_RED);
-                        player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "这个团队名称已经被注册过了！");
+                        player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "这个团队名称已经被注册过了！");
                         return true;
-                    } else if (playTime < 48 && !ObjectPool.pluginConfig.debug) {
-                        var10001 = String.valueOf(ChatColor.DARK_RED);
-                        player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "你的总游玩时长不足48小时，不能创建团队！");
+                    } else if (playTime < pluginConfig.team_create_play_time_requirement && !pluginConfig.debug) {
+                        player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你的总游玩时长不足48小时，不能创建团队！");
                         return true;
                     } else {
-                        if (!ObjectPool.pluginConfig.debug) {
-                            if (player.getLevel() < 100) {
-                                var10001 = String.valueOf(ChatColor.DARK_RED);
-                                player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "你需要至少100级经验才能创建团队！谢谢");
+                        if (!pluginConfig.debug) {
+                            if (player.getLevel() < pluginConfig.team_create_level_requirement) {
+                                player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你需要至少100级经验才能创建团队！谢谢");
                                 return true;
                             }
 
-                            player.setLevel(player.getLevel() - 100);
+                            player.setLevel(player.getLevel() - pluginConfig.team_create_level_requirement);
                         }
 
                         TeamManager.createTeam(name, player);
                         player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
-                        player.sendMessage(String.valueOf(ChatColor.GOLD) + "``经验等级-100");
-                        var10001 = String.valueOf(ChatColor.GOLD);
-                        player.sendMessage(var10001 + "恭喜，你创建了一个名为" + name + "的团队");
-                        player.sendMessage(String.valueOf(ChatColor.GOLD) + "你可以用 /team setvisit 设置团队公开传送点");
-                        var10001 = String.valueOf(ChatColor.GOLD);
-                        player.sendMessage(var10001 + "当团队规模达到" + String.valueOf(ChatColor.YELLOW) + String.valueOf(ChatColor.BOLD) + "5" + String.valueOf(ChatColor.RESET) + String.valueOf(ChatColor.GOLD) + "人，你可以使用 /team sethome 为团队设置传送点并且可以使用 /team color 选择团队名称颜色");
+                        player.sendMessage(ChatColor.GOLD + "``经验等级-" + pluginConfig.team_create_level_requirement);
+                        player.sendMessage(ChatColor.GOLD + "恭喜，你创建了一个名为" + name + "的团队");
+                        player.sendMessage(ChatColor.GOLD + "你可以用 /team setvisit 设置团队公开传送点");
+                        player.sendMessage(ChatColor.GOLD + "当团队规模达到" + String.valueOf(ChatColor.YELLOW) + String.valueOf(ChatColor.BOLD) + "5" + String.valueOf(ChatColor.RESET) + String.valueOf(ChatColor.GOLD) + "人，你可以使用 /team sethome 为团队设置传送点并且可以使用 /team color 选择团队名称颜色");
                         return true;
                     }
                 }
@@ -157,7 +145,7 @@ public class TeamService {
                     return true;
                 } else {
                     int teamSize = TeamManager.getSize(mc_player.team);
-                    if (teamSize < 5 && !ObjectPool.pluginConfig.debug) {
+                    if (teamSize < 5 && !pluginConfig.debug) {
                         var10001 = String.valueOf(ChatColor.DARK_RED);
                         player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "团队规模小于5人无法选择颜色！");
                         return true;
@@ -208,7 +196,7 @@ public class TeamService {
                     return true;
                 } else {
                     int teamSize = TeamManager.getSize(mc_player.team);
-                    if (teamSize < 5 && !ObjectPool.pluginConfig.debug) {
+                    if (teamSize < 5 && !pluginConfig.debug) {
                         var10001 = String.valueOf(ChatColor.DARK_RED);
                         player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "团队规模小于5人无法设定团队简称！");
                         return true;
@@ -259,7 +247,7 @@ public class TeamService {
             } else {
                 Team team = TeamManager.getTeam(teamName);
                 int teamSize = TeamManager.getSize(teamName);
-                if (teamSize < 5 && !ObjectPool.pluginConfig.debug) {
+                if (teamSize < 5 && !pluginConfig.debug) {
                     var10001 = String.valueOf(ChatColor.DARK_RED);
                     player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "团队规模小于5人无法设定团队简称！");
                     return true;
@@ -319,7 +307,7 @@ public class TeamService {
             return true;
         } else {
             int teamSize = TeamManager.getSize(team.getName());
-            if (teamSize < 5 && !ObjectPool.pluginConfig.debug) {
+            if (teamSize < 5 && !pluginConfig.debug) {
                 var10001 = String.valueOf(ChatColor.DARK_RED);
                 player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "团队规模小于5人无法设置传送点！");
                 return true;
@@ -1079,7 +1067,7 @@ public class TeamService {
                 return true;
             } else {
                 int teamSize = TeamManager.getSize(team);
-                if (teamSize < 5 && !ObjectPool.pluginConfig.debug) {
+                if (teamSize < 5 && !pluginConfig.debug) {
                     var10001 = String.valueOf(ChatColor.DARK_RED);
                     player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "团队规模小于5人设置QQ！");
                     return true;

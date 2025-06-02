@@ -20,9 +20,7 @@ public class RunTask {
     }
 
     public static void run() {
-        ConsoleCommandSender var10000 = Bukkit.getConsoleSender();
-        String var10001 = String.valueOf(ChatColor.DARK_AQUA);
-        var10000.sendMessage(var10001 + "[Team]" + String.valueOf(ChatColor.GREEN) + "RunTask");
+        Bukkit.getConsoleSender().sendMessage(ChatColor.DARK_AQUA + "[Team]" + ChatColor.GREEN + "RunTask");
         ZonedDateTime now = ZonedDateTime.now(ZoneId.of("Asia/Shanghai"));
         ZonedDateTime nextRun = now.withHour(0).withMinute(0).withSecond(0);
         if (now.compareTo(nextRun) > 0) {

@@ -6,11 +6,15 @@
 package tcc.youajing.teamplugin.services;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Statistic;
 import org.bukkit.command.Command;
 import org.bukkit.entity.Player;
 import tcc.youajing.teamplugin.ObjectPool;
 import tcc.youajing.teamplugin.entities.Team;
 import tcc.youajing.teamplugin.utils.MyUtil;
+
+import static tcc.youajing.teamplugin.ObjectPool.pluginConfig;
+import static tcc.youajing.teamplugin.ObjectPool.visitBanListMapper;
 
 public class TeamVisitService {
     public TeamVisitService() {
@@ -39,30 +43,37 @@ public class TeamVisitService {
             player.sendMessage(String.valueOf(ChatColor.YELLOW) + "用法: /team visit <名称>");
             return true;
         } else {
-            String var10001;
-            if (!ObjectPool.pluginConfig.debug && player.getLevel() < 30) {
-                var10001 = String.valueOf(ChatColor.DARK_RED);
-                player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "你需要至少30级经验才能访问其他组织！谢谢");
+            // 游玩时间单位小时
+            int playTime = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
+
+            // 命令所需经验
+            int level_requirement = pluginConfig.team_visit_level_requirement;
+            if(playTime < 48) {
+                level_requirement = pluginConfig.team_visit_level_requirement_for_new_player;  // 未满48小时的新玩家所需的经验
+            }
+
+            if (!pluginConfig.debug && player.getLevel() < level_requirement) {
+                player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你需要至少" + level_requirement + "级经验才能访问其他组织！谢谢");
                 return true;
             } else {
                 String teamName = args[1];
+                if(visitBanListMapper.exists(teamName)) {
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "该团队的访问已被管理员禁止！");
+                }
                 Team team = TeamManager.getTeam(teamName);
                 if (team == null) {
-                    var10001 = String.valueOf(ChatColor.DARK_RED);
-                    player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "该团队不存在！");
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "该团队不存在！");
                     return true;
                 } else if (team.visit == null) {
-                    var10001 = String.valueOf(ChatColor.DARK_RED);
-                    player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "该团队还没有设定公开传送点！请让团队的队长使用 /team setvisit 来设定传送点");
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "该团队还没有设定公开传送点！请让团队的队长使用 /team setvisit 来设定传送点");
                     return true;
                 } else {
-                    if (!ObjectPool.pluginConfig.debug) {
-                        player.setLevel(player.getLevel() - 30);
+                    if (!pluginConfig.debug) {
+                        player.setLevel(player.getLevel() - level_requirement);
                     }
 
                     MyUtil.teleport(player, team.visit);
-                    var10001 = String.valueOf(ChatColor.GREEN);
-                    player.sendMessage(var10001 + "你已成功传送到" + MyUtil.msgColor(team.color) + team.name + String.valueOf(ChatColor.GREEN) + "！");
+                    player.sendMessage(ChatColor.GREEN + "你已成功传送到" + MyUtil.msgColor(team.color) + team.name + String.valueOf(ChatColor.GREEN) + "！");
                     return true;
                 }
             }
