@@ -188,7 +188,7 @@ public class TeamCommand implements TabExecutor {
                 return MyUtil.tabComplete(Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite", "accept", "reject", "kick", "color", "abbr", "list", "members", "home", "online", "quit", "qq", "setvisit", "visit", "info"), input);
             }
 
-            return MyUtil.tabComplete(Arrays.asList("new", "set副手", "unset副手", "del", "sethome", "rename", "invite", "accept", "reject", "kick", "color", "abbr", "list", "members", "home", "online", "quit", "qq", "setvisit", "visit", "info", "ban", "unban"), input);
+            return MyUtil.tabComplete(Arrays.asList("reload", "new", "set副手", "unset副手", "del", "sethome", "rename", "invite", "accept", "reject", "kick", "color", "abbr", "list", "members", "home", "online", "quit", "qq", "setvisit", "visit", "info", "ban", "unban"), input);
         } else if (args.length == 2) {
             String subcommand = args[0].toLowerCase();
             ArrayList<String> res = new ArrayList<>();
