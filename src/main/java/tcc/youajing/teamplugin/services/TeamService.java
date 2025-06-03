@@ -823,35 +823,29 @@ public class TeamService {
     }
 
     public boolean accept(Player player, Command command, String label, String[] args) {
-        String var10001;
         if (TeamManager.getTeamByPlayer(player) != null) {
-            var10001 = String.valueOf(ChatColor.DARK_RED);
-            player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "哥，你已经有团队了！");
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "哥，你已经有团队了！");
             this.invitations.remove(player);
             return true;
         } else if (!this.invitations.containsKey(player)) {
-            var10001 = String.valueOf(ChatColor.DARK_RED);
-            player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "没有任何团队向你发出邀请！");
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "没有任何团队向你发出邀请！");
             return true;
         } else {
             Team team = (Team)this.invitations.get(player);
             if (!TeamManager.hasTeam(team.getName())) {
-                var10001 = String.valueOf(ChatColor.DARK_RED);
-                player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "这个团队已经不存在了！");
+                player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "这个团队已经不存在了！");
                 this.invitations.remove(player);
                 return true;
             } else {
                 int playTime = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
                 if (playTime < 24) {
-                    var10001 = String.valueOf(ChatColor.DARK_RED);
-                    player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "你的总游玩时长不足24小时，无法加入团队！");
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你的总游玩时长不足24小时，无法加入团队！");
                     return true;
                 } else {
                     TeamManager.addMember(team, player.getUniqueId());
                     this.invitations.remove(player, team);
                     player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
-                    var10001 = String.valueOf(ChatColor.GOLD);
-                    player.sendMessage(var10001 + "你成功加入了团队" + MyUtil.msgColor(team.color) + team.getName());
+                    player.sendMessage(ChatColor.DARK_RED + "你成功加入了团队" + MyUtil.msgColor(team.color) + team.getName());
                     Iterator var7 = TeamManager.getMembers(team).iterator();
 
                     while(var7.hasNext()) {
@@ -859,8 +853,7 @@ public class TeamService {
                         Player p = Bukkit.getPlayer(mcPlayer.uuid);
                         if (p != null && !p.equals(player)) {
                             player.playSound(p, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
-                            var10001 = String.valueOf(ChatColor.GOLD);
-                            p.sendMessage(var10001 + player.getName() + "加入了你们的团队！");
+                            p.sendMessage(ChatColor.DARK_RED + player.getName() + "加入了你们的团队！");
                         }
                     }
 
@@ -869,8 +862,7 @@ public class TeamService {
                         fushou1 = Bukkit.getPlayer(team.getPresident());
                         if (fushou1 != null) {
                             player.playSound(fushou1, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
-                            var10001 = String.valueOf(ChatColor.GOLD);
-                            fushou1.sendMessage(var10001 + player.getName() + "加入了你的团队！");
+                            fushou1.sendMessage(ChatColor.DARK_RED + player.getName() + "加入了你的团队！");
                         }
                     }
 
@@ -878,8 +870,7 @@ public class TeamService {
                         fushou1 = Bukkit.getPlayer(team.getVicePresident());
                         if (fushou1 != null) {
                             player.playSound(fushou1, Sound.ENTITY_PLAYER_LEVELUP, 1.0F, 1.0F);
-                            var10001 = String.valueOf(ChatColor.GOLD);
-                            fushou1.sendMessage(var10001 + player.getName() + "加入了你的团队！");
+                            fushou1.sendMessage(ChatColor.DARK_RED + player.getName() + "加入了你的团队！");
                         }
                     }
 
