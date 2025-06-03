@@ -1,3 +1,4 @@
 ## TeamPlugin
+原作者: Youajing
 
-### 简介
+### 使用方式
