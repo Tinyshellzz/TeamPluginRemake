@@ -1,5 +1,6 @@
 ## TeamPlugin
 原作者: Youajing
+原作链接: https://github.com/YouaJing/TeamPlugin
 
 ### 使用方式
 创建新的团队，消耗50级经验，需在线时长满24H
