@@ -54,6 +54,8 @@ public class TeamCommand implements TabExecutor {
                     switch (args[1]) {
                         case "visit":
                             return TeamBanService.banVisit(sender, command, label, args);
+                        case "home":
+                            return TeamBanService.banHome(sender, command, label, args);
                     }
                 case "unban":
                     if (!(sender instanceof ConsoleCommandSender || _m.find() || sender.isOp() || sender.hasPermission("team.ban"))) {
@@ -69,6 +71,8 @@ public class TeamCommand implements TabExecutor {
                     switch (args[1]) {
                         case "visit":
                             return TeamBanService.unbanVisit(sender, command, label, args);
+                        case "home":
+                            return TeamBanService.unbanHome(sender, command, label, args);
                     }
             }
         }
@@ -344,7 +348,7 @@ public class TeamCommand implements TabExecutor {
                     String input = args[2].toLowerCase();
 
                     switch (subcommand2) {
-                        case "visit":
+                        case "visit": case "home":
                             for (Team t1 : TeamManager.getTeams()) {
                                 res.add(t1.getName());
                             }

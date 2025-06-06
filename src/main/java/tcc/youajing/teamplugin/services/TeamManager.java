@@ -106,6 +106,8 @@ public class TeamManager {
     public static void deleteTeam(String teamName) {
         ObjectPool.mcPlayerMapper.delete_team_by_teamName(teamName);
         ObjectPool.teamMapper.delete_team_by_name(teamName);
+        ObjectPool.visitBanListMapper.remove(teamName);
+        ObjectPool.homeBanListMapper.remove(teamName);
         Iterator var1 = teams.entrySet().iterator();
 
         while(var1.hasNext()) {
@@ -115,7 +117,6 @@ public class TeamManager {
                 teams.remove(entry.getKey());
             }
         }
-
     }
 
     public static void setHome(String teamName, Location home) {
@@ -156,7 +157,9 @@ public class TeamManager {
 
     public static void rename(Team team, String newName) {
         ObjectPool.teamMapper.update_name_by_name(team.name, newName);
-        ObjectPool.mcPlayerMapper.update_team_by_team(team.name, newName);
+        ObjectPool.mcPlayerMapper.update_team_by_name(team.name, newName);
+        ObjectPool.homeBanListMapper.update(team.name, newName);
+        ObjectPool.visitBanListMapper.update(team.name, newName);
         Iterator var2 = teams.entrySet().iterator();
 
         while(var2.hasNext()) {

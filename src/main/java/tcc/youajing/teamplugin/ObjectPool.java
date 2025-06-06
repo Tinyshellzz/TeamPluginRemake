@@ -8,6 +8,7 @@ package tcc.youajing.teamplugin;
 import com.google.gson.Gson;
 import java.util.HashMap;
 import tcc.youajing.teamplugin.config.PluginConfig;
+import tcc.youajing.teamplugin.database.HomeBanListMapper;
 import tcc.youajing.teamplugin.database.MCPlayerMapper;
 import tcc.youajing.teamplugin.database.TeamMapper;
 import tcc.youajing.teamplugin.database.VisitBanListMapper;
@@ -20,6 +21,7 @@ public class ObjectPool {
     public static Gson gson = new Gson();
     public static MCPlayerMapper mcPlayerMapper;
     public static VisitBanListMapper visitBanListMapper;
+    public static HomeBanListMapper homeBanListMapper;
     public static TeamMapper teamMapper;
     public static TeamService teamService;
     public static TeamVisitService teamVisitService;

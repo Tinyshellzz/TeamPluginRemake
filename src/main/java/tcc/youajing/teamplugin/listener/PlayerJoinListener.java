@@ -17,7 +17,6 @@ public class PlayerJoinListener implements Listener {
 
     @EventHandler
     public void handle(PlayerJoinEvent event) {
-        Bukkit.getConsoleSender().sendMessage("PlayerJoinListener.handle get_user_by_uuid" + String.valueOf(event.getPlayer()));
         ObjectPool.mcPlayerMapper.update_player(event.getPlayer());
     }
 }

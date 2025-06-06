@@ -25,11 +25,13 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import tcc.youajing.teamplugin.ObjectPool;
 import tcc.youajing.teamplugin.config.PluginConfig;
+import tcc.youajing.teamplugin.database.HomeBanListMapper;
 import tcc.youajing.teamplugin.entities.MCPlayer;
 import tcc.youajing.teamplugin.entities.Team;
 import tcc.youajing.teamplugin.placeholder.TeampluginExpansion;
 import tcc.youajing.teamplugin.utils.MyUtil;
 
+import static tcc.youajing.teamplugin.ObjectPool.homeBanListMapper;
 import static tcc.youajing.teamplugin.ObjectPool.pluginConfig;
 
 public class TeamService {
@@ -76,7 +78,7 @@ public class TeamService {
             player.sendMessage(String.valueOf(ChatColor.YELLOW) + "用法: /team new <名称>");
             return true;
         } else {
-            int playTime = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
+            double playTime = (double)player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
             MCPlayer mc_player = ObjectPool.mcPlayerMapper.get(player);
             if (mc_player != null && mc_player.team != null) {
                 player.sendMessage(ChatColor.DARK_RED + "错误：" + ChatColor.GOLD + "你已经在一个团队中了！请先退出你所在的团队才能使用此指令！");
@@ -103,7 +105,7 @@ public class TeamService {
                         player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "这个团队名称已经被注册过了！");
                         return true;
                     } else if (playTime < pluginConfig.team_create_play_time_requirement && !pluginConfig.debug) {
-                        player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你的总游玩时长不足48小时，不能创建团队！");
+                        player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你的总游玩时长不足" + pluginConfig.team_create_play_time_requirement + "小时，不能创建团队！" + "你还需游玩" + (pluginConfig.team_create_play_time_requirement - playTime) +"小时");
                         return true;
                     } else {
                         if (!pluginConfig.debug) {
@@ -390,15 +392,18 @@ public class TeamService {
             player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "只有团队成员才能传送到团队传送点！");
             return true;
         } else {
+            if(homeBanListMapper.exists(team.getName())) {
+                player.sendMessage(ChatColor.DARK_RED + "错误：该团队的传送点已被管理员封禁");
+                return true;
+            }
+
             Location location = team.getHome();
             if (location == null) {
-                var10001 = String.valueOf(ChatColor.DARK_RED);
-                player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "你的团队还没有设定传送点！请让团队的队长使用 /team sethome 来设定传送点");
+                player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你的团队还没有设定传送点！请让团队的队长使用 /team sethome 来设定传送点");
                 return true;
             } else {
                 MyUtil.teleport(player, location);
-                var10001 = String.valueOf(ChatColor.GOLD);
-                player.sendMessage(var10001 + "你成功传送到了团队" + MyUtil.msgColor(team.color) + team.getName() + String.valueOf(ChatColor.GOLD) + "的传送点！");
+                player.sendMessage(ChatColor.GOLD + "你成功传送到了团队" + MyUtil.msgColor(team.color) + team.getName() + String.valueOf(ChatColor.GOLD) + "的传送点！");
                 return true;
             }
         }
@@ -448,10 +453,9 @@ public class TeamService {
                 player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "你邀请的玩家不在线！");
                 return true;
             } else {
-                int playTime = target.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
+                double playTime = (double)target.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
                 if (playTime < 24) {
-                    var10001 = String.valueOf(ChatColor.DARK_RED);
-                    player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "你邀请的玩家的总游玩时长不足24小时，无法邀请他加入团队！");
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你邀请的玩家的总游玩时长不足24小时，无法邀请他加入团队！" + "他还需游玩" + (24-playTime) +"小时");
                     return true;
                 } else {
                     Team team = TeamManager.getTeamByPlayer(player);
@@ -837,9 +841,9 @@ public class TeamService {
                 this.invitations.remove(player);
                 return true;
             } else {
-                int playTime = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
+                double playTime = (double)player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
                 if (playTime < 24) {
-                    player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你的总游玩时长不足24小时，无法加入团队！");
+                    player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你的总游玩时长不足24小时，无法加入团队！" + "你还需游玩" + (24-playTime) + "小时");
                     return true;
                 } else {
                     TeamManager.addMember(team, player.getUniqueId());

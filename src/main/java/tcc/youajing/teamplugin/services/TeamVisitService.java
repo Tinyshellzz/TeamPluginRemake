@@ -44,10 +44,13 @@ public class TeamVisitService {
             return true;
         } else {
             // 游玩时间单位小时
-            int playTime = player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
+            double playTime = (double) player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
 
             // 命令所需经验
             int level_requirement = pluginConfig.team_visit_level_requirement;
+            if(playTime < pluginConfig.visit_play_time_requirement) {  // 游玩时间不足，不允许使用该命令
+                player.sendMessage(net.md_5.bungee.api.ChatColor.RED + "你需要游玩" + pluginConfig.visit_play_time_requirement + "小时才能使用tpa命令! " + "你还需游玩"+ (pluginConfig.visit_play_time_requirement-playTime) + "小时");
+            }
             if(playTime < 48) {
                 level_requirement = pluginConfig.team_visit_level_requirement_for_new_player;  // 未满48小时的新玩家所需的经验
             }

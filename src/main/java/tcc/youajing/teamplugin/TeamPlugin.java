@@ -11,10 +11,12 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import tcc.youajing.teamplugin.command.TeamCommand;
 import tcc.youajing.teamplugin.config.PluginConfig;
+import tcc.youajing.teamplugin.database.HomeBanListMapper;
 import tcc.youajing.teamplugin.database.MCPlayerMapper;
 import tcc.youajing.teamplugin.database.TeamMapper;
 import tcc.youajing.teamplugin.database.VisitBanListMapper;
 import tcc.youajing.teamplugin.listener.PlayerJoinListener;
+import tcc.youajing.teamplugin.listener.TpaCommandBlocker;
 import tcc.youajing.teamplugin.placeholder.TeampluginExpansion;
 import tcc.youajing.teamplugin.services.TeamService;
 import tcc.youajing.teamplugin.services.TeamVisitService;
@@ -43,10 +45,12 @@ public final class TeamPlugin extends JavaPlugin {
         ObjectPool.teamService = new TeamService();
         ObjectPool.teamVisitService = new TeamVisitService();
         ObjectPool.visitBanListMapper = new VisitBanListMapper();
+        ObjectPool.homeBanListMapper = new HomeBanListMapper();
     }
 
     public void register() {
         this.getServer().getPluginManager().registerEvents(new PlayerJoinListener(), this);
+        this.getServer().getPluginManager().registerEvents(new TpaCommandBlocker(), this);
         this.getCommand("team").setExecutor(new TeamCommand(this));
 
 

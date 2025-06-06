@@ -55,6 +55,29 @@ public class VisitBanListMapper {
         }
     }
 
+    public void update(String oldName, String newName) {
+        PreparedStatement stmt = null;
+        Connection conn = null;
+        ResultSet rs = null;
+        try {
+            conn = MysqlConfig.connect();
+            stmt = conn.prepareStatement("UPDATE visit_ban_list SET name=? WHERE name=?");
+            stmt.setString(1, newName);
+            stmt.setString(2, oldName);
+            stmt.executeUpdate();
+            conn.commit();
+        } catch (SQLException e) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "VisitBanListMapper.update:" + e.getMessage());
+        } finally {
+            try {
+                if (stmt != null) stmt.close();
+                if (rs != null) rs.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+            }
+        }
+    }
+
     public void remove(String name) {
         PreparedStatement stmt = null;
         Connection conn = null;

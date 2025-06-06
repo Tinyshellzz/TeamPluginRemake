@@ -280,7 +280,7 @@ public class MCPlayerMapper {
 
     }
 
-    public void update_team_by_team(String team, String newTeam) {
+    public void update_team_by_name(String team, String newTeam) {
         PreparedStatement stmt = null;
         Connection conn = null;
         ResultSet rs = null;
