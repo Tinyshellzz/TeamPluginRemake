@@ -333,7 +333,7 @@ public class TeamCommand implements TabExecutor {
                     return MyUtil.tabComplete(ObjectPool.teamMapper.get_visit_teamName_list(), input);
                 case "ban":
                 case "unban":
-                    return MyUtil.tabComplete(Arrays.asList("visit"), input);
+                    return MyUtil.tabComplete(Arrays.asList("visit", "home"), input);
                 default:
                     return null;
             }
