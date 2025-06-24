@@ -20,7 +20,6 @@ public class PluginConfig {
     public String db_database;
     public int team_create_level_requirement;
     public double team_create_play_time_requirement;
-    public double tpa_play_time_requirement;
     public double visit_play_time_requirement;
     public int team_visit_level_requirement;
     public int team_visit_level_requirement_for_new_player;
@@ -48,7 +47,6 @@ public class PluginConfig {
         config.db_database = yamlconfig.getString("db_database");
         config.team_create_level_requirement = yamlconfig.getInt("team_create_level_requirement");
         config.team_create_play_time_requirement = yamlconfig.getDouble("team_create_play_time_requirement");
-        config.tpa_play_time_requirement = yamlconfig.getDouble("tpa_play_time_requirement");
         config.visit_play_time_requirement = yamlconfig.getDouble("visit_play_time_requirement");
         config.team_visit_level_requirement = yamlconfig.getInt("team_visit_level_requirement");
         config.team_visit_level_requirement_for_new_player = yamlconfig.getInt("team_visit_level_requirement_for_new_player");
