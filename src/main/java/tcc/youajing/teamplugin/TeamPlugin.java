@@ -16,6 +16,7 @@ import tcc.youajing.teamplugin.database.TeamMapper;
 import tcc.youajing.teamplugin.database.VisitBanListMapper;
 import tcc.youajing.teamplugin.listener.PlayerJoinListener;
 import tcc.youajing.teamplugin.placeholder.TeampluginExpansion;
+import tcc.youajing.teamplugin.services.TeamManager;
 import tcc.youajing.teamplugin.services.TeamService;
 import tcc.youajing.teamplugin.services.TeamVisitService;
 import tcc.youajing.teamplugin.tasks.RunTask;
@@ -44,6 +45,7 @@ public final class TeamPlugin extends JavaPlugin {
         ObjectPool.teamVisitService = new TeamVisitService();
         ObjectPool.visitBanListMapper = new VisitBanListMapper();
         ObjectPool.homeBanListMapper = new HomeBanListMapper();
+        new TeamManager();
     }
 
     public void register() {

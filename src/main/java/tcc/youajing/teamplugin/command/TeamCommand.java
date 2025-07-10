@@ -241,7 +241,7 @@ public class TeamCommand implements TabExecutor {
                         }
 
                         for (MCPlayer p : TeamManager.getMembers(team)) {
-                            String playerkicked = Bukkit.getOfflinePlayer(p.uuid).getName();
+                            String playerkicked = ObjectPool.mcPlayerMapper.get_user_by_uuid(p.uuid).getName();
                             if (playerkicked != null && !playerkicked.equals(player.getName())) {
                                 res.add(playerkicked);
                             }
@@ -253,7 +253,7 @@ public class TeamCommand implements TabExecutor {
                     team = TeamManager.getTeamByPlayer(player);
                     if (team != null && team.isPresident(player)) {
                         for (MCPlayer p : TeamManager.getMembers(team)) {
-                            String playerkicked = Bukkit.getOfflinePlayer(p.uuid).getName();
+                            String playerkicked = ObjectPool.mcPlayerMapper.get_user_by_uuid(p.uuid).getName();
                             if (playerkicked != null && !playerkicked.equals(player.getName())) {
                                 res.add(playerkicked);
                             }

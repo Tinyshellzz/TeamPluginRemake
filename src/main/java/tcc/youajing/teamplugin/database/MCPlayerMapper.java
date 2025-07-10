@@ -99,6 +99,33 @@ public class MCPlayerMapper {
         return player;
     }
 
+    public ArrayList<MCPlayer> getPlayers() {
+        PreparedStatement stmt = null;
+        Connection conn = null;
+        ResultSet rs = null;
+        ArrayList<MCPlayer> players = new ArrayList<>();
+        try {
+            conn = MysqlConfig.connect();
+            conn.commit();
+            stmt = conn.prepareStatement("SELECT * FROM mc_players");
+            rs = stmt.executeQuery();
+            while(rs.next()) {
+                players.add(new MCPlayer(rs.getString(1), UUID.fromString(rs.getString(2)), rs.getString(3), (LoginTime)ObjectPool.gson.fromJson(rs.getString(4), LoginTime.class), rs.getString(5) == null ? null : UUID.fromString(rs.getString(5)), rs.getBoolean(6)));
+            }
+        } catch (SQLException e) {
+            Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "MCPlayerMapper.get_user_by_uuid:" + e.getMessage());
+        } finally {
+            try {
+                if(stmt != null) stmt.close();
+                if(rs != null) rs.close();
+                if(conn != null) conn.close();
+            } catch (SQLException e) {
+            }
+        }
+
+        return players;
+    }
+
     public List<MCPlayer> get_users_by_team(String teamName) {
         PreparedStatement stmt = null;
         Connection conn = null;

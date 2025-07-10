@@ -46,7 +46,7 @@ public class TeamService {
             return true;
         } else {
             String targetName = args[1];
-            OfflinePlayer targetPlayer = Bukkit.getOfflinePlayer(targetName);
+            MCPlayer targetPlayer = ObjectPool.mcPlayerMapper.get_user_by_name(targetName);
             if (targetPlayer == null) {
                 player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "玩家不存在！");
                 return true;
@@ -63,8 +63,8 @@ public class TeamService {
                         return true;
                     } else {
                         Team team = ObjectPool.teamMapper.get_team_by_name(teamName);
-                        TeamManager.teams.put(mc_player.getUuid(), team);
-                        TeamManager.teams.put(mc_player.getUuid(), team);
+                        TeamManager.teams.put(mc_player.getUniqueId(), team);
+                        TeamManager.teams.put(mc_player.getUniqueId(), team);
                         player.sendMessage(String.format("{\"team_color\":\"%s\",\"team_name\":\"%s\"}", team.color, teamName));
                         return true;
                     }
@@ -139,8 +139,8 @@ public class TeamService {
             String var10001;
             if (mc_player != null && mc_player.team != null) {
                 Team team = ObjectPool.teamMapper.get_team_by_name(mc_player.team);
-                TeamManager.teams.put(mc_player.getUuid(), team);
-                TeamManager.teams.put(mc_player.getUuid(), team);
+                TeamManager.teams.put(mc_player.getUniqueId(), team);
+                TeamManager.teams.put(mc_player.getUniqueId(), team);
                 if (!team.isPresident(player) & !team.isVicePresident(player)) {
                     var10001 = String.valueOf(ChatColor.DARK_RED);
                     player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "只有队长、副手才能选择团队颜色！");
@@ -190,8 +190,8 @@ public class TeamService {
             String var10001;
             if (mc_player != null && mc_player.team != null) {
                 Team team = ObjectPool.teamMapper.get_team_by_name(mc_player.team);
-                TeamManager.teams.put(mc_player.getUuid(), team);
-                TeamManager.teams.put(mc_player.getUuid(), team);
+                TeamManager.teams.put(mc_player.getUniqueId(), team);
+                TeamManager.teams.put(mc_player.getUniqueId(), team);
                 if (!team.isPresident(player) & !team.isVicePresident(player)) {
                     var10001 = String.valueOf(ChatColor.DARK_RED);
                     player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "只有队长、副手才能设定团队简称！");
@@ -769,7 +769,7 @@ public class TeamService {
 
                 while(var12.hasNext()) {
                     MCPlayer mcPlayer = (MCPlayer)var12.next();
-                    String memberName = Bukkit.getOfflinePlayer(mcPlayer.uuid).getName();
+                    String memberName = ObjectPool.mcPlayerMapper.get_user_by_uuid(mcPlayer.uuid).getName();
                     if (memberName != null) {
                         members.append(memberName).append(", ");
                     }
@@ -812,7 +812,7 @@ public class TeamService {
 
             while(var10.hasNext()) {
                 MCPlayer mcPlayer = (MCPlayer)var10.next();
-                String memberName = Bukkit.getOfflinePlayer(mcPlayer.uuid).getName();
+                String memberName = ObjectPool.mcPlayerMapper.get_user_by_uuid(mcPlayer.uuid).getName();
                 if (memberName != null && Bukkit.getPlayer(memberName) != null) {
                     onlineMembers.append(memberName).append(", ");
                 }

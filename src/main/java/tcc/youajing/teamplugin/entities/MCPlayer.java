@@ -50,7 +50,7 @@ public class MCPlayer {
         return ObjectPool.gson.toJson(this);
     }
 
-    public UUID getUuid() {
+    public UUID getUniqueId() {
         return this.uuid;
     }
 

@@ -54,7 +54,7 @@ public class TeampluginExpansion extends PlaceholderExpansion {
                         return "队伍不存在";
                     }
 
-                    return Bukkit.getOfflinePlayer(team.getPresident()).getName();
+                    return TeamManager.get_name_by_uuid(team.getPresident());
                 case "color":
                     if (team == null) {
                         return "<#FFFFFF>";
@@ -114,16 +114,16 @@ public class TeampluginExpansion extends PlaceholderExpansion {
 
                         t = (Team)var7.next();
                         if (identifier.equalsIgnoreCase(t.getName() + "_leaders")) {
-                            StringBuilder msg = new StringBuilder("队长: " + Bukkit.getOfflinePlayer(t.getPresident()).getName());
+                            StringBuilder msg = new StringBuilder("队长: " + TeamManager.get_name_by_uuid(t.getPresident()));
                             if (t.getVicePresident() != null) {
-                                msg.append("副队: ").append(Bukkit.getOfflinePlayer(t.getVicePresident()).getName());
+                                msg.append("副队: ").append(TeamManager.get_name_by_uuid(t.getVicePresident()));
                             }
 
                             return msg.toString();
                         }
                     } while(!identifier.equalsIgnoreCase(t.getName() + "_leader"));
 
-                    return Bukkit.getOfflinePlayer(t.getPresident()).getName();
+                    return TeamManager.get_name_by_uuid(t.getPresident());
             }
         }
     }
