@@ -18,33 +18,12 @@ import static tcc.youajing.teamplugin.ObjectPool.mcPlayerMapper;
 
 public class TeamManager {
     public static Map<UUID, Team> teams = new HashMap();
-    private static final Map<UUID, String> UUID_name_map = new HashMap<>();
-    private static final Map<String, UUID> name_UUID_map = new HashMap<>();
-
-    public TeamManager() {
-        ArrayList<MCPlayer> players = mcPlayerMapper.getPlayers();
-        for (MCPlayer player : players) {
-            UUID_name_map.put(player.uuid, player.getName());
-            name_UUID_map.put(player.getName().toLowerCase(), player.getUniqueId());
-        }
-    }
 
     public static void createTeam(String teamName, Player president) {
         Team team = new Team(teamName, president.getUniqueId());
         ObjectPool.mcPlayerMapper.update_team_by_uuid(president.getUniqueId(), teamName);
         ObjectPool.teamMapper.insert(team);
         teams.put(president.getUniqueId(), team);
-    }
-
-    public static void update_player(Player player) {
-        ObjectPool.mcPlayerMapper.update_player(player);
-
-        UUID_name_map.put(player.getUniqueId(), player.getName());
-        name_UUID_map.put(player.getName().toLowerCase(), player.getUniqueId());
-    }
-
-    public static String get_name_by_uuid(UUID uuid) {
-        return UUID_name_map.get(uuid);
     }
 
     public static int getSize(String teamName) {

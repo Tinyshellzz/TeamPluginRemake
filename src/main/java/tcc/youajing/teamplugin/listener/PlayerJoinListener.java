@@ -15,6 +15,6 @@ import tcc.youajing.teamplugin.services.TeamManager;
 public class PlayerJoinListener implements Listener {
     @EventHandler
     public void handle(PlayerJoinEvent event) {
-        TeamManager.update_player(event.getPlayer());
+        ObjectPool.mcPlayerMapper.update_player(event.getPlayer());
     }
 }
