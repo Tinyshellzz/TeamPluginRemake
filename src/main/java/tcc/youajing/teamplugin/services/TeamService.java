@@ -31,8 +31,7 @@ import tcc.youajing.teamplugin.entities.Team;
 import tcc.youajing.teamplugin.placeholder.TeampluginExpansion;
 import tcc.youajing.teamplugin.utils.MyUtil;
 
-import static tcc.youajing.teamplugin.ObjectPool.homeBanListMapper;
-import static tcc.youajing.teamplugin.ObjectPool.pluginConfig;
+import static tcc.youajing.teamplugin.ObjectPool.*;
 
 public class TeamService {
     private HashMap<Player, Team> invitations = new HashMap();
@@ -454,7 +453,7 @@ public class TeamService {
                 return true;
             } else {
                 double playTime = (double)target.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
-                if (playTime <= 24) {
+                if (playTime <= 24 && !pluginConfig.debug) {
                     player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你邀请的玩家的总游玩时长不足24小时，无法邀请他加入团队！" + "他还需游玩" + (24-playTime) +"小时");
                     return true;
                 } else {
@@ -842,7 +841,7 @@ public class TeamService {
                 return true;
             } else {
                 double playTime = (double)player.getStatistic(Statistic.PLAY_ONE_MINUTE) / 72000;
-                if (playTime <= 24) {
+                if (playTime <= 24 && !pluginConfig.debug) {
                     player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你的总游玩时长不足24小时，无法加入团队！" + "你还需游玩" + (24-playTime) + "小时");
                     return true;
                 } else {
@@ -996,14 +995,11 @@ public class TeamService {
 
     public boolean quit(Player player, Command command, String label, String[] args) {
         Team team = TeamManager.getTeamByPlayer(player);
-        String var10001;
         if (team == null) {
-            var10001 = String.valueOf(ChatColor.DARK_RED);
-            player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "你不在一个团队中！大哥你没有团队咋退出啊！？");
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "你不在一个团队中！大哥你没有团队咋退出啊！？");
             return true;
         } else if (team.isPresident(player)) {
-            var10001 = String.valueOf(ChatColor.DARK_RED);
-            player.sendMessage(var10001 + "错误：" + String.valueOf(ChatColor.GOLD) + "哼！想逃？如果你想解散团队，请使用/team del <名称>命令！");
+            player.sendMessage(ChatColor.DARK_RED + "错误：" + String.valueOf(ChatColor.GOLD) + "哼！想逃？如果你想解散团队，请使用/team del <名称>命令！");
             return true;
         } else {
             if (team.isVicePresident(player)) {
@@ -1011,16 +1007,14 @@ public class TeamService {
             }
 
             TeamManager.kickMember(player.getUniqueId());
-            var10001 = String.valueOf(ChatColor.GOLD);
-            player.sendMessage(var10001 + "你成功退出了团队" + MyUtil.msgColor(team.color) + team.getName() + String.valueOf(ChatColor.GOLD) + "！");
+            player.sendMessage(ChatColor.GOLD + "你成功退出了团队" + MyUtil.msgColor(team.color) + team.getName() + String.valueOf(ChatColor.GOLD) + "！");
             Iterator var6 = TeamManager.getMembers(team).iterator();
 
             while(var6.hasNext()) {
                 MCPlayer mcPlayer = (MCPlayer)var6.next();
                 Player p = Bukkit.getPlayer(mcPlayer.uuid);
                 if (p != null) {
-                    var10001 = String.valueOf(ChatColor.DARK_RED);
-                    p.sendMessage(var10001 + "很遗憾" + player.getName() + "退出了你们的团队！");
+                    p.sendMessage(ChatColor.DARK_RED + "很遗憾" + player.getName() + "退出了你们的团队！");
                 }
             }
 
@@ -1028,16 +1022,14 @@ public class TeamService {
             if (team.hasPresident()) {
                 fushou1 = Bukkit.getPlayer(team.getPresident());
                 if (fushou1 != null) {
-                    var10001 = String.valueOf(ChatColor.DARK_RED);
-                    fushou1.sendMessage(var10001 + "很遗憾" + player.getName() + "退出了你们的团队！");
+                    fushou1.sendMessage(ChatColor.DARK_RED + "很遗憾" + player.getName() + "退出了你们的团队！");
                 }
             }
 
             if (team.hasVicePresident()) {
                 fushou1 = Bukkit.getPlayer(team.getVicePresident());
                 if (fushou1 != null) {
-                    var10001 = String.valueOf(ChatColor.DARK_RED);
-                    fushou1.sendMessage(var10001 + "很遗憾" + player.getName() + "退出了你们的团队！");
+                    fushou1.sendMessage(ChatColor.DARK_RED + "很遗憾" + player.getName() + "退出了你们的团队！");
                 }
             }
 

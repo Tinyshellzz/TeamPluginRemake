@@ -367,7 +367,7 @@ public class TeamMapper {
         try {
             conn = MysqlConfig.connect();
             stmt = conn.prepareStatement("UPDATE teams SET vice_president=? WHERE name=?");
-            stmt.setString(1, vicePresident.toString());
+            stmt.setString(1, vicePresident == null ? null : vicePresident.toString());
             stmt.setString(2, name);
             stmt.executeUpdate();
             conn.commit();
